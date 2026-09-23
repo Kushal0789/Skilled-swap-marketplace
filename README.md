@@ -30,9 +30,3 @@ A peer-to-peer skill-swapping web application built with pure PHP, MySQL, and va
 - MySQL Database (via XAMPP, WAMP, or local installation)
 - Apache / Nginx Web Server
 
-### Step-by-Step Setup
-
-1. **Clone the repository**:
-   ```bash
-   git clone [https://github.com/Kushal0789/Skilled-swap-marketplace.git](https://github.com/Kushal0789/Skilled-swap-marketplace.git)
-   cd Skilled-swap-marketplace
