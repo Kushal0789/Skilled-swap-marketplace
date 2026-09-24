@@ -19,8 +19,8 @@ if (!$viewUserId) {
 
 $pdo = get_db();
 
-// Fetch target user profile
-$uStmt = $pdo->prepare("SELECT id, name, username, email, bio, location, profile_image, role, status, created_at FROM users WHERE id = :id LIMIT 1");
+// 1. Fetch target user profile (Updated to include social media columns)
+$uStmt = $pdo->prepare("SELECT id, name, username, email, bio, location, profile_image, role, status, created_at, discord, facebook, contact_email FROM users WHERE id = :id LIMIT 1");
 $uStmt->execute([':id' => $viewUserId]);
 $targetUser = $uStmt->fetch();
 
@@ -111,6 +111,29 @@ include __DIR__ . '/includes/header.php';
                 <p class="profile-bio-text">
                     <?= !empty($targetUser['bio']) ? nl2br(e($targetUser['bio'])) : '<span style="color: var(--text-muted); font-style: italic;">No bio written yet.</span>' ?>
                 </p>
+
+                <!-- 2. Render Social Media Badges/Links -->
+                <?php if (!empty($targetUser['discord']) || !empty($targetUser['facebook']) || !empty($targetUser['contact_email'])): ?>
+                    <div class="profile-social-links" style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; align-items: center;">
+                        <?php if (!empty($targetUser['discord'])): ?>
+                            <span class="btn btn-sm btn-outline" style="cursor: default;" title="Discord Username">
+                                💬 <?= e($targetUser['discord']) ?>
+                            </span>
+                        <?php endif; ?>
+
+                        <?php if (!empty($targetUser['facebook'])): ?>
+                            <a href="<?= e($targetUser['facebook']) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-secondary">
+                                🌐 Facebook
+                            </a>
+                        <?php endif; ?>
+
+                        <?php if (!empty($targetUser['contact_email'])): ?>
+                            <a href="mailto:<?= e($targetUser['contact_email']) ?>" class="btn btn-sm btn-outline">
+                                ✉️ <?= e($targetUser['contact_email']) ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <?php if (!$isOwnProfile && is_logged_in()): ?>
@@ -142,6 +165,23 @@ include __DIR__ . '/includes/header.php';
                         <input type="text" name="location" class="form-input" value="<?= e($targetUser['location'] ?? '') ?>" placeholder="e.g. Seattle, WA or Remote">
                     </div>
                 </div>
+
+                <!-- 3. Social Media Form Input Fields -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Discord Username</label>
+                        <input type="text" name="discord" class="form-input" value="<?= e($targetUser['discord'] ?? '') ?>" placeholder="e.g. username#1234">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Facebook Profile URL</label>
+                        <input type="url" name="facebook" class="form-input" value="<?= e($targetUser['facebook'] ?? '') ?>" placeholder="https://facebook.com/yourprofile">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Public Contact Email</label>
+                        <input type="email" name="contact_email" class="form-input" value="<?= e($targetUser['contact_email'] ?? '') ?>" placeholder="your.email@example.com">
+                    </div>
+                </div>
+
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label">Bio & Learning Philosophy</label>
                     <textarea name="bio" class="form-textarea" placeholder="Tell members about yourself, what you love building, and what you want to learn..."><?= e($targetUser['bio'] ?? '') ?></textarea>

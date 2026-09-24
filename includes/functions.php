@@ -238,8 +238,8 @@ function get_platform_stats(PDO $pdo): array {
         // Successful/accepted swaps
         $swapsCount = (int)$pdo->query("SELECT COUNT(*) FROM swap_requests WHERE status = 'accepted' OR status = 'completed'")->fetchColumn();
 
-        // Total skill exchange offerings listed by users ('teach')
-        $offeringsCount = (int)$pdo->query("SELECT COUNT(*) FROM user_skills WHERE type = 'teach'")->fetchColumn();
+        // Total skill exchange offerings listed by users ('OFFER')
+        $offeringsCount = (int)$pdo->query("SELECT COUNT(*) FROM user_skills WHERE skill_type = 'OFFER'")->fetchColumn();
 
         return [
             'users'     => max($usersCount, 1),

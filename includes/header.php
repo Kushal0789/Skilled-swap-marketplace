@@ -73,7 +73,7 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
                     <a href="dashboard.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'dashboard.php') ? 'active' : '' ?>">Dashboard</a>
                     <a href="matches.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'matches.php') ? 'active' : '' ?>">
                         Matches
-                        <span class="match-badge">AI Match</span>
+                        
                     </a>
                     <a href="requests.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'requests.php') ? 'active' : '' ?>">
                         Requests
