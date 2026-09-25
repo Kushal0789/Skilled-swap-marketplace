@@ -63,7 +63,7 @@ try {
     }
 
     // Verify skill exists
-    $checkSkill = $pdo->prepare("SELECT id, name FROM skills WHERE id = :id");
+    $checkSkill = $pdo->prepare("SELECT id, name, category FROM skills WHERE id = :id");
     $checkSkill->execute([':id' => $skillId]);
     $skillData = $checkSkill->fetch();
     if (!$skillData) {
@@ -101,6 +101,7 @@ try {
         'id'          => $userSkillId,
         'skill_id'    => $skillId,
         'skill_name'  => $skillData['name'],
+        'category'    => $skillData['category'],
         'skill_type'  => $skillType,
         'proficiency' => $proficiency,
         'description' => $description

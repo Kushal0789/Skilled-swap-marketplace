@@ -26,6 +26,13 @@ $location     = trim($_POST['location'] ?? '');
 $discord      = trim($_POST['discord'] ?? '');
 $facebook     = trim($_POST['facebook'] ?? '');
 $contactEmail = trim($_POST['contact_email'] ?? '');
+$github       = trim($_POST['github'] ?? '');
+$linkedin     = trim($_POST['linkedin'] ?? '');
+$twitter      = trim($_POST['twitter'] ?? '');
+$instagram    = trim($_POST['instagram'] ?? '');
+$telegram     = trim($_POST['telegram'] ?? '');
+$whatsapp     = trim($_POST['whatsapp'] ?? '');
+$website      = trim($_POST['website'] ?? '');
 
 if (empty($name)) {
     // If sent as raw JSON
@@ -36,6 +43,13 @@ if (empty($name)) {
     $discord      = trim($input['discord'] ?? '');
     $facebook     = trim($input['facebook'] ?? '');
     $contactEmail = trim($input['contact_email'] ?? '');
+    $github       = trim($input['github'] ?? '');
+    $linkedin     = trim($input['linkedin'] ?? '');
+    $twitter      = trim($input['twitter'] ?? '');
+    $instagram    = trim($input['instagram'] ?? '');
+    $telegram     = trim($input['telegram'] ?? '');
+    $whatsapp     = trim($input['whatsapp'] ?? '');
+    $website      = trim($input['website'] ?? '');
 }
 
 if (empty($name)) {
@@ -55,7 +69,25 @@ try {
         $avatarFilename = $uploadRes['filename'];
     }
 
+    $params = [
+        ':name'          => $name,
+        ':bio'           => $bio,
+        ':location'      => $location,
+        ':discord'       => !empty($discord) ? $discord : null,
+        ':facebook'      => !empty($facebook) ? $facebook : null,
+        ':contact_email' => !empty($contactEmail) ? $contactEmail : null,
+        ':github'        => !empty($github) ? $github : null,
+        ':linkedin'      => !empty($linkedin) ? $linkedin : null,
+        ':twitter'       => !empty($twitter) ? $twitter : null,
+        ':instagram'     => !empty($instagram) ? $instagram : null,
+        ':telegram'      => !empty($telegram) ? $telegram : null,
+        ':whatsapp'      => !empty($whatsapp) ? $whatsapp : null,
+        ':website'       => !empty($website) ? $website : null,
+        ':id'            => $userId
+    ];
+
     if ($avatarFilename !== null) {
+        $params[':img'] = $avatarFilename;
         $stmt = $pdo->prepare("
             UPDATE users
             SET name = :name, 
@@ -64,20 +96,17 @@ try {
                 discord = :discord, 
                 facebook = :facebook, 
                 contact_email = :contact_email, 
+                github = :github,
+                linkedin = :linkedin,
+                twitter = :twitter,
+                instagram = :instagram,
+                telegram = :telegram,
+                whatsapp = :whatsapp,
+                website = :website,
                 profile_image = :img, 
                 updated_at = NOW()
             WHERE id = :id
         ");
-        $stmt->execute([
-            ':name'          => $name,
-            ':bio'           => $bio,
-            ':location'      => $location,
-            ':discord'       => !empty($discord) ? $discord : null,
-            ':facebook'      => !empty($facebook) ? $facebook : null,
-            ':contact_email' => !empty($contactEmail) ? $contactEmail : null,
-            ':img'           => $avatarFilename,
-            ':id'            => $userId
-        ]);
     } else {
         $stmt = $pdo->prepare("
             UPDATE users
@@ -87,28 +116,31 @@ try {
                 discord = :discord, 
                 facebook = :facebook, 
                 contact_email = :contact_email, 
+                github = :github,
+                linkedin = :linkedin,
+                twitter = :twitter,
+                instagram = :instagram,
+                telegram = :telegram,
+                whatsapp = :whatsapp,
+                website = :website,
                 updated_at = NOW()
             WHERE id = :id
         ");
-        $stmt->execute([
-            ':name'          => $name,
-            ':bio'           => $bio,
-            ':location'      => $location,
-            ':discord'       => !empty($discord) ? $discord : null,
-            ':facebook'      => !empty($facebook) ? $facebook : null,
-            ':contact_email' => !empty($contactEmail) ? $contactEmail : null,
-            ':id'            => $userId
-        ]);
     }
+    $stmt->execute($params);
 
     // Refresh session data
-    $userStmt = $pdo->prepare("SELECT id, name, username, email, bio, location, profile_image, role, status, discord, facebook, contact_email FROM users WHERE id = :id");
+    $userStmt = $pdo->prepare("
+        SELECT id, name, username, email, bio, location, profile_image, role, status,
+               discord, facebook, contact_email, github, linkedin, twitter, instagram, telegram, whatsapp, website 
+        FROM users WHERE id = :id
+    ");
     $userStmt->execute([':id' => $userId]);
     $updatedUser = $userStmt->fetch();
 
     $_SESSION['user'] = $updatedUser;
 
-    json_response(true, 'Profile updated successfully!', [
+    json_response(true, 'Profile and social links updated successfully!', [
         'user'       => $updatedUser,
         'avatar_url' => get_avatar_url($updatedUser['profile_image'])
     ]);

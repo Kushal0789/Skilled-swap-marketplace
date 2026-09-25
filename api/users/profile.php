@@ -22,7 +22,8 @@ try {
 
     // 1. Fetch user public profile
     $userStmt = $pdo->prepare("
-        SELECT id, name, username, bio, location, profile_image, role, status, created_at
+        SELECT id, name, username, bio, location, profile_image, role, status, created_at,
+               discord, facebook, contact_email, github, linkedin, twitter, instagram, telegram, whatsapp, website
         FROM users
         WHERE id = :id AND status = 'active'
         LIMIT 1
