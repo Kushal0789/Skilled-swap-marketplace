@@ -22,7 +22,7 @@ $pdo = get_db();
 // 1. Fetch target user profile (including all social media and direct chat channels)
 $uStmt = $pdo->prepare("
     SELECT id, name, username, email, bio, location, profile_image, role, status, created_at,
-           discord, facebook, contact_email, github, linkedin, twitter, instagram, telegram, whatsapp, website
+           discord, facebook, contact_email, github, linkedin, twitter, instagram, whatsapp, website
     FROM users WHERE id = :id LIMIT 1
 ");
 $uStmt->execute([':id' => $viewUserId]);
@@ -36,27 +36,33 @@ $isOwnProfile = ($viewUserId === $currentUid);
 $allPlatforms = get_social_platforms_meta();
 $activeSocialLinks = get_user_social_links($targetUser);
 
-// Fetch offered skills
-$offStmt = $pdo->prepare("
-    SELECT us.id, us.skill_id, us.proficiency, us.description, s.name, s.category
-    FROM user_skills us
-    INNER JOIN skills s ON us.skill_id = s.id
-    WHERE us.user_id = :id AND us.skill_type = 'OFFER'
-    ORDER BY s.name ASC
-");
-$offStmt->execute([':id' => $viewUserId]);
-$offeredSkills = $offStmt->fetchAll();
+$offeredSkills = [];
+$wantedSkills = [];
 
-// Fetch wanted skills
-$wantStmt = $pdo->prepare("
-    SELECT us.id, us.skill_id, us.proficiency, us.description, s.name, s.category
-    FROM user_skills us
-    INNER JOIN skills s ON us.skill_id = s.id
-    WHERE us.user_id = :id AND us.skill_type = 'WANT'
-    ORDER BY s.name ASC
-");
-$wantStmt->execute([':id' => $viewUserId]);
-$wantedSkills = $wantStmt->fetchAll();
+// Only query skills if viewing own profile (skills are completely removed for visitors)
+if ($isOwnProfile) {
+    // Fetch offered skills
+    $offStmt = $pdo->prepare("
+        SELECT us.id, us.skill_id, us.proficiency, us.description, s.name, s.category
+        FROM user_skills us
+        INNER JOIN skills s ON us.skill_id = s.id
+        WHERE us.user_id = :id AND us.skill_type = 'OFFER'
+        ORDER BY s.name ASC
+    ");
+    $offStmt->execute([':id' => $viewUserId]);
+    $offeredSkills = $offStmt->fetchAll();
+
+    // Fetch wanted skills
+    $wantStmt = $pdo->prepare("
+        SELECT us.id, us.skill_id, us.proficiency, us.description, s.name, s.category
+        FROM user_skills us
+        INNER JOIN skills s ON us.skill_id = s.id
+        WHERE us.user_id = :id AND us.skill_type = 'WANT'
+        ORDER BY s.name ASC
+    ");
+    $wantStmt->execute([':id' => $viewUserId]);
+    $wantedSkills = $wantStmt->fetchAll();
+}
 
 // Fetch reviews
 $revStmt = $pdo->prepare("
@@ -85,9 +91,24 @@ include __DIR__ . '/includes/header.php';
             <div class="profile-avatar-wrapper">
                 <img src="<?= e(get_avatar_url($targetUser['profile_image'])) ?>" alt="<?= e($targetUser['name']) ?>" id="profile-avatar-preview" class="profile-avatar-large">
                 <?php if ($isOwnProfile): ?>
-                    <label for="avatar-file-input" class="avatar-edit-badge" title="Change profile picture">
+                    <!-- Camera icon button -->
+                    <button type="button" id="avatarMenuBtn" class="avatar-edit-badge" title="Change profile picture" aria-haspopup="true" aria-expanded="false">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                    </label>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="avatarDropdown" class="avatar-dropdown" role="menu" aria-label="Profile photo options">
+                        <button type="button" id="uploadTriggerBtn" class="avatar-dropdown-item" role="menuitem">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Upload New Photo
+                        </button>
+                        <button type="button" id="removeAvatarBtn" class="avatar-dropdown-item avatar-dropdown-danger" role="menuitem"
+                            <?php if (empty($targetUser['profile_image']) || $targetUser['profile_image'] === 'default-avatar.svg'): ?>style="display:none;"<?php endif; ?>>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            Remove Photo
+                        </button>
+                    </div>
+                    <!-- Hidden file input for upload -->
+                    <input type="file" id="avatarUploadInput" accept="image/jpeg,image/png,image/webp" style="display:none;">
                 <?php endif; ?>
             </div>
 
@@ -156,9 +177,9 @@ include __DIR__ . '/includes/header.php';
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         Edit Profile & Skills
                     </button>
-                <?php elseif (is_logged_in()): ?>
-                    <a href="discover.php" class="btn btn-primary btn-lg">Propose Skill Swap</a>
-                    <a href="messages.php?user_id=<?= $targetUser['id'] ?>" class="btn btn-secondary btn-lg">Send Message</a>
+                <?php else: ?>
+                    <a href="<?= is_logged_in() ? 'discover.php' : 'login.php' ?>" class="btn btn-primary btn-lg">Propose Skill Swap</a>
+                    <a href="<?= is_logged_in() ? 'messages.php?user_id=' . (int)$targetUser['id'] : 'login.php' ?>" class="btn btn-secondary btn-lg">Send Message</a>
                 <?php endif; ?>
             </div>
         </div>
@@ -193,7 +214,7 @@ include __DIR__ . '/includes/header.php';
 
             <!-- Profile & Socials Form -->
             <form id="profile-info-form">
-                <input type="file" name="profile_image" id="avatar-file-input" accept="image/jpeg,image/png,image/webp" style="display: none;">
+                <!-- avatar-file-input retained as alias for legacy references (avatarUploadInput is used above) -->
 
                 <!-- TAB 1: SOCIAL & CHAT LINKS -->
                 <div class="manager-tab-pane active" id="tab-social">
@@ -389,7 +410,8 @@ include __DIR__ . '/includes/header.php';
         </section>
     <?php endif; ?>
 
-    <!-- Two-Column Skills Grid: Offered vs Wanted -->
+    <?php if ($isOwnProfile): ?>
+    <!-- Two-Column Skills Grid: Offered vs Wanted (Owner Only) -->
     <div class="skills-management-grid">
         <!-- Offered Skills -->
         <div class="card">
@@ -489,9 +511,10 @@ include __DIR__ . '/includes/header.php';
             </div>
         </div>
     </div>
+    <?php endif; ?>
 
     <!-- Reviews Section -->
-    <div class="card" style="margin-top: 2rem;">
+    <div class="card" style="margin-top: <?= $isOwnProfile ? '2rem' : '0' ?>;">
         <div class="card-header">
             <h3 class="card-title">Member Reviews & Endorsements (<?= $totalReviews ?>)</h3>
             <?php if ($avgRating > 0): ?>
@@ -582,10 +605,67 @@ include __DIR__ . '/includes/header.php';
     cursor: pointer;
     box-shadow: var(--shadow-sm);
     transition: transform var(--transition-fast);
+    border: none;
+    padding: 0;
+    outline-offset: 2px;
 }
 
 .avatar-edit-badge:hover {
     transform: scale(1.1);
+}
+
+/* Avatar dropdown menu */
+.avatar-dropdown {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 180px;
+    background: var(--bg-surface, #1e2130);
+    border: 1px solid var(--border-color, rgba(255,255,255,0.1));
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    z-index: 200;
+    overflow: hidden;
+    animation: avatarDropdownIn 0.15s ease;
+}
+
+@keyframes avatarDropdownIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.avatar-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    background: none;
+    border: none;
+    color: var(--text-primary, #e2e8f0);
+    font-size: 0.88rem;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.avatar-dropdown-item:hover {
+    background: var(--bg-hover, rgba(255,255,255,0.07));
+}
+
+.avatar-dropdown-item + .avatar-dropdown-item {
+    border-top: 1px solid var(--border-color, rgba(255,255,255,0.08));
+}
+
+.avatar-dropdown-danger {
+    color: var(--danger, #f87171);
+}
+
+.avatar-dropdown-danger:hover {
+    background: rgba(248, 113, 113, 0.10);
 }
 
 .profile-hero-details {

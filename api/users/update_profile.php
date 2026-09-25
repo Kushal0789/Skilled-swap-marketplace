@@ -30,7 +30,6 @@ $github       = trim($_POST['github'] ?? '');
 $linkedin     = trim($_POST['linkedin'] ?? '');
 $twitter      = trim($_POST['twitter'] ?? '');
 $instagram    = trim($_POST['instagram'] ?? '');
-$telegram     = trim($_POST['telegram'] ?? '');
 $whatsapp     = trim($_POST['whatsapp'] ?? '');
 $website      = trim($_POST['website'] ?? '');
 
@@ -47,7 +46,6 @@ if (empty($name)) {
     $linkedin     = trim($input['linkedin'] ?? '');
     $twitter      = trim($input['twitter'] ?? '');
     $instagram    = trim($input['instagram'] ?? '');
-    $telegram     = trim($input['telegram'] ?? '');
     $whatsapp     = trim($input['whatsapp'] ?? '');
     $website      = trim($input['website'] ?? '');
 }
@@ -80,7 +78,6 @@ try {
         ':linkedin'      => !empty($linkedin) ? $linkedin : null,
         ':twitter'       => !empty($twitter) ? $twitter : null,
         ':instagram'     => !empty($instagram) ? $instagram : null,
-        ':telegram'      => !empty($telegram) ? $telegram : null,
         ':whatsapp'      => !empty($whatsapp) ? $whatsapp : null,
         ':website'       => !empty($website) ? $website : null,
         ':id'            => $userId
@@ -100,7 +97,6 @@ try {
                 linkedin = :linkedin,
                 twitter = :twitter,
                 instagram = :instagram,
-                telegram = :telegram,
                 whatsapp = :whatsapp,
                 website = :website,
                 profile_image = :img, 
@@ -120,7 +116,6 @@ try {
                 linkedin = :linkedin,
                 twitter = :twitter,
                 instagram = :instagram,
-                telegram = :telegram,
                 whatsapp = :whatsapp,
                 website = :website,
                 updated_at = NOW()
@@ -132,7 +127,7 @@ try {
     // Refresh session data
     $userStmt = $pdo->prepare("
         SELECT id, name, username, email, bio, location, profile_image, role, status,
-               discord, facebook, contact_email, github, linkedin, twitter, instagram, telegram, whatsapp, website 
+               discord, facebook, contact_email, github, linkedin, twitter, instagram, whatsapp, website 
         FROM users WHERE id = :id
     ");
     $userStmt->execute([':id' => $userId]);

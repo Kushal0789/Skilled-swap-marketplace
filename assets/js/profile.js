@@ -29,17 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return clean ? `https://wa.me/${clean}` : '';
             }
         },
-        telegram: {
-            name: 'Telegram',
-            color: '#0088cc',
-            badge: 'Direct Chat',
-            isDirectChat: true,
-            icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>',
-            formatUrl: (v) => {
-                if (v.startsWith('http')) return v;
-                return `https://t.me/${v.replace(/^@/, '').trim()}`;
-            }
-        },
         discord: {
             name: 'Discord',
             color: '#5865F2',
@@ -135,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return div.innerHTML;
     }
 
-    // Helper: Copy Discord tag to clipboard
+    // Helper: Copy Discord tag to clipboard with visual badge state
     function bindDiscordCopyButtons() {
         document.querySelectorAll('.social-link-copy').forEach(btn => {
             btn.onclick = async () => {
@@ -153,10 +142,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.body.removeChild(temp);
                     window.showToast(`Discord handle "${tag}" copied!`, 'success', 'Copied');
                 }
+                const badge = btn.querySelector('.social-copy-badge');
+                if (badge) {
+                    const originalText = badge.textContent;
+                    badge.textContent = '✓ Copied!';
+                    badge.classList.add('badge-copied-active');
+                    setTimeout(() => {
+                        badge.textContent = originalText;
+                        badge.classList.remove('badge-copied-active');
+                    }, 2000);
+                }
             };
         });
     }
     bindDiscordCopyButtons();
+
+    // Helper: Copy username chip
+    const copyUsernameBtn = document.getElementById('btn-copy-username');
+    if (copyUsernameBtn) {
+        copyUsernameBtn.onclick = async () => {
+            const handle = copyUsernameBtn.getAttribute('data-username');
+            if (!handle) return;
+            const textToCopy = '@' + handle;
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                window.showToast(`Username "${textToCopy}" copied!`, 'success', 'Copied');
+            } catch (e) {
+                const temp = document.createElement('textarea');
+                temp.value = textToCopy;
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand('copy');
+                document.body.removeChild(temp);
+                window.showToast(`Username "${textToCopy}" copied!`, 'success', 'Copied');
+            }
+        };
+    }
 
     // 1. Render Hero Social Media Links Bar
     function renderHeroSocialLinks(user) {
@@ -377,12 +398,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData(profileForm);
 
+            // Ensure 'name' is always present — required by update_profile.php
+            if (!formData.get('name') || !formData.get('name').trim()) {
+                const nameFromPage = document.querySelector('.profile-name')?.textContent.trim();
+                if (nameFromPage) formData.set('name', nameFromPage);
+            }
+
             try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
                 const response = await fetch('api/users/update_profile.php', {
                     method: 'POST',
-                    headers: {
-                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
+                    headers: { 'X-CSRF-Token': csrfToken },
                     body: formData
                 });
                 const res = await response.json();
@@ -884,4 +910,149 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     loadCatalogForQuickAdder();
+
+    // ─────────────────────────────────────────────────────────────
+    // 12. Avatar: Dropdown Toggle, Upload & Remove Photo
+    // ─────────────────────────────────────────────────────────────
+
+    const avatarMenuBtn     = document.getElementById('avatarMenuBtn');
+    const avatarDropdown    = document.getElementById('avatarDropdown');
+    const uploadTriggerBtn  = document.getElementById('uploadTriggerBtn');
+    const removeAvatarBtn   = document.getElementById('removeAvatarBtn');
+    const avatarUploadInput = document.getElementById('avatarUploadInput');
+    // avatarPreviewImg is already declared at the top of this DOMContentLoaded block
+
+    // ── Dropdown toggle ──────────────────────────────────────────
+    if (avatarMenuBtn && avatarDropdown) {
+        avatarDropdown.style.display = 'none';
+
+        avatarMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            avatarDropdown.style.display =
+                (avatarDropdown.style.display === 'none') ? 'block' : 'none';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (avatarDropdown && !avatarDropdown.contains(e.target) && e.target !== avatarMenuBtn) {
+                avatarDropdown.style.display = 'none';
+            }
+        });
+    }
+
+    // ── "Upload / Update Photo" → trigger file picker ────────────
+    if (uploadTriggerBtn && avatarUploadInput) {
+        uploadTriggerBtn.addEventListener('click', () => {
+            if (avatarDropdown) avatarDropdown.style.display = 'none';
+            avatarUploadInput.click();
+        });
+    }
+
+    // ── File selected → instant preview then AJAX upload ─────────
+    if (avatarUploadInput && avatarPreviewImg) {
+        avatarUploadInput.addEventListener('change', () => {
+            const file = avatarUploadInput.files[0];
+            if (!file) return;
+
+            if (file.size > 2 * 1024 * 1024) {
+                window.showToast('Image must be under 2 MB.', 'error');
+                avatarUploadInput.value = '';
+                return;
+            }
+
+            // Immediately show a local preview
+            const reader = new FileReader();
+            reader.onload = (ev) => { avatarPreviewImg.src = ev.target.result; };
+            reader.readAsDataURL(file);
+
+            // Upload to dedicated endpoint
+            uploadAvatarFile(file);
+        });
+    }
+
+    async function uploadAvatarFile(file) {
+        const formData = new FormData();
+        formData.append('avatar', file);   // endpoint expects field name "avatar"
+
+        try {
+            // Use raw fetch with CSRF header (apiFetch can't handle FormData bodies)
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            const response  = await fetch('api/users/upload_avatar.php', {
+                method : 'POST',
+                headers: { 'X-CSRF-Token': csrfToken },
+                body   : formData
+            });
+
+            let res;
+            try { res = await response.json(); }
+            catch (_) { res = { success: false, message: 'Server returned an invalid response.' }; }
+
+            if (res.success) {
+                window.showToast('Profile photo updated!', 'success');
+                const newUrl = res.data?.avatar_url;
+                if (newUrl && avatarPreviewImg) {
+                    avatarPreviewImg.src = newUrl;
+                    const navAvatar = document.querySelector('.nav-avatar-img');
+                    if (navAvatar) navAvatar.src = newUrl;
+                }
+                // Reveal "Remove" button since user now has a custom photo
+                if (removeAvatarBtn) removeAvatarBtn.style.removeProperty('display');
+            } else {
+                window.showToast(res.message || 'Upload failed.', 'error');
+                // Revert preview on error
+                avatarPreviewImg.src = avatarPreviewImg.dataset.original || 'assets/images/default-avatar.svg';
+            }
+        } catch (err) {
+            console.error('[Avatar Upload Error]', err);
+            window.showToast('Network error during upload.', 'error');
+        } finally {
+            avatarUploadInput.value = '';  // reset so same file can be re-picked
+        }
+    }
+
+    // Store original src so we can revert on error
+    if (avatarPreviewImg) {
+        avatarPreviewImg.dataset.original = avatarPreviewImg.src;
+    }
+
+    // ── "Remove Photo" → AJAX remove → switch to default avatar ──
+    if (removeAvatarBtn) {
+        removeAvatarBtn.addEventListener('click', async () => {
+            if (avatarDropdown) avatarDropdown.style.display = 'none';
+
+            if (!confirm('Remove your profile photo and revert to the default avatar?')) return;
+
+            removeAvatarBtn.disabled = true;
+            removeAvatarBtn.textContent = 'Removing…';
+
+            // Use window.apiFetch — it handles CSRF & JSON automatically
+            const res = await window.apiFetch('api/users/remove_avatar.php', { method: 'POST' });
+
+            if (res.success) {
+                window.showToast('Profile photo removed.', 'success');
+
+                const defaultSrc = res.data?.avatar_url || 'assets/images/default-avatar.svg';
+
+                if (avatarPreviewImg) {
+                    avatarPreviewImg.src = defaultSrc;
+                    avatarPreviewImg.dataset.original = defaultSrc;
+                }
+                const navAvatar = document.querySelector('.nav-avatar-img');
+                if (navAvatar) navAvatar.src = defaultSrc;
+
+                // Hide "Remove" since there's no custom photo now
+                removeAvatarBtn.style.display = 'none';
+            } else {
+                window.showToast(res.message || 'Failed to remove photo.', 'error');
+            }
+
+            removeAvatarBtn.disabled = false;
+            removeAvatarBtn.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Remove Photo
+            `;
+        });
+    }
 });
