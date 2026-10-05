@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const oneWayGrid = document.getElementById('one-way-matches-grid');
     const twoWayCountEl = document.getElementById('two-way-count');
     const oneWayCountEl = document.getElementById('one-way-count');
+    const matchSearchInput = document.getElementById('match-search-input');
+
+    let allTwoWayMatches = [];
+    let allOneWayMatches = [];
 
     /**
      * Helper function to escape HTML special characters
@@ -20,6 +24,35 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
+    }
+
+    if (matchSearchInput) {
+        matchSearchInput.addEventListener('input', () => {
+            const query = matchSearchInput.value.toLowerCase().trim();
+            filterAndRender(query);
+        });
+    }
+
+    function filterAndRender(query) {
+        if (!query) {
+            renderLists(allTwoWayMatches, allOneWayMatches);
+            return;
+        }
+
+        const filteredTwoWay = allTwoWayMatches.filter(m => 
+            (m.name && m.name.toLowerCase().includes(query)) ||
+            (m.location && m.location.toLowerCase().includes(query)) ||
+            (m.primary_exchange && m.primary_exchange.you_teach && m.primary_exchange.you_teach.toLowerCase().includes(query)) ||
+            (m.primary_exchange && m.primary_exchange.you_learn && m.primary_exchange.you_learn.toLowerCase().includes(query))
+        );
+
+        const filteredOneWay = allOneWayMatches.filter(m => 
+            (m.name && m.name.toLowerCase().includes(query)) ||
+            (m.location && m.location.toLowerCase().includes(query)) ||
+            (m.offered_to_you && m.offered_to_you.some(s => (s.name || s.skill_name || '').toLowerCase().includes(query)))
+        );
+
+        renderLists(filteredTwoWay, filteredOneWay);
     }
 
     loadMatches();
@@ -50,46 +83,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            if (twoWayCountEl) twoWayCountEl.textContent = data.two_way_count || 0;
-            if (oneWayCountEl) oneWayCountEl.textContent = data.one_way_count || 0;
+            allTwoWayMatches = data.two_way_matches || [];
+            allOneWayMatches = data.one_way_matches || [];
 
-            // Render Two-Way Matches
-            if (twoWayGrid) {
-                if (!data.two_way_matches || data.two_way_matches.length === 0) {
-                    twoWayGrid.innerHTML = `
-                        <div class="empty-state col-span-full">
-                            <div class="empty-state-icon">🤝</div>
-                            <h3 class="empty-state-title">No two-way matches yet</h3>
-                            <p class="empty-state-desc">We couldn't find a member with an exact mutual skill swap yet. Check out the one-way recommendations below or browse the Discover page!</p>
-                            <a href="discover.php" class="btn btn-secondary" style="margin-top: 1rem;">Explore Discover Catalog</a>
-                        </div>
-                    `;
-                } else {
-                    twoWayGrid.innerHTML = data.two_way_matches.map(m => renderTwoWayCard(m)).join('');
-                }
-            }
-
-            // Render One-Way Matches
-            if (oneWayGrid) {
-                if (!data.one_way_matches || data.one_way_matches.length === 0) {
-                    oneWayGrid.innerHTML = `
-                        <div class="empty-state col-span-full">
-                            <div class="empty-state-icon">💡</div>
-                            <h3 class="empty-state-title">No one-way recommendations</h3>
-                            <p class="empty-state-desc">Try adding more skills to your wishlist to discover more mentors.</p>
-                        </div>
-                    `;
-                } else {
-                    oneWayGrid.innerHTML = data.one_way_matches.map(m => renderOneWayCard(m)).join('');
-                }
-            }
-
-            attachMatchActionHandlers();
+            renderLists(allTwoWayMatches, allOneWayMatches);
 
         } catch (err) {
             console.error('Match error:', err);
             window.showToast('Failed to calculate skill matches.', 'error');
         }
+    }
+
+    function renderLists(twoWayList, oneWayList) {
+        if (twoWayCountEl) twoWayCountEl.textContent = twoWayList.length;
+        if (oneWayCountEl) oneWayCountEl.textContent = oneWayList.length;
+
+        // Render Two-Way Matches
+        if (twoWayGrid) {
+            if (twoWayList.length === 0) {
+                twoWayGrid.innerHTML = `
+                    <div class="empty-state col-span-full">
+                        <div class="empty-state-icon">🤝</div>
+                        <h3 class="empty-state-title">No two-way matches found</h3>
+                        <p class="empty-state-desc">We couldn't find a member with this criteria yet. Check out the one-way recommendations below or browse the Discover catalog!</p>
+                        <a href="discover.php" class="btn btn-secondary" style="margin-top: 1rem;">Explore Discover Catalog</a>
+                    </div>
+                `;
+            } else {
+                twoWayGrid.innerHTML = twoWayList.map(m => renderTwoWayCard(m)).join('');
+            }
+        }
+
+        // Render One-Way Matches
+        if (oneWayGrid) {
+            if (oneWayList.length === 0) {
+                oneWayGrid.innerHTML = `
+                    <div class="empty-state col-span-full">
+                        <div class="empty-state-icon">💡</div>
+                        <h3 class="empty-state-title">No one-way recommendations</h3>
+                        <p class="empty-state-desc">Try adding more skills to your wishlist to discover more mentors.</p>
+                    </div>
+                `;
+            } else {
+                oneWayGrid.innerHTML = oneWayList.map(m => renderOneWayCard(m)).join('');
+            }
+        }
+
+        attachMatchActionHandlers();
     }
 
     function renderTwoWayCard(match) {

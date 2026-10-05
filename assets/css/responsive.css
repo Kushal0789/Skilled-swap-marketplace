@@ -99,9 +99,13 @@
         display: none;
     }
 
+    .chat-mobile-back-btn {
+        display: inline-flex;
+    }
+
     .match-exchange-visual {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.75rem;
     }
 
     .exchange-arrows {
@@ -124,7 +128,20 @@
     }
 
     .btn {
-        padding: 0.55rem 1rem;
+        padding: 0.6rem 1.1rem;
         font-size: 0.9rem;
+    }
+
+    .stat-number {
+        font-size: 1.5rem !important;
+    }
+
+    .dash-welcome-card {
+        padding: 1.25rem 1rem !important;
+    }
+
+    .chat-layout {
+        border-radius: var(--radius-md);
+        height: calc(100vh - 140px);
     }
 }

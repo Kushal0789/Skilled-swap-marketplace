@@ -33,6 +33,7 @@ include __DIR__ . '/includes/header.php';
             <div class="filter-search-box">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 <input type="text" id="discover-search-input" class="filter-input-search" placeholder="Search by skill name, topic, or member username...">
+                <button type="button" id="clear-search-btn" class="clear-search-btn hidden" aria-label="Clear search">&times;</button>
             </div>
 
             <!-- Category Select -->
@@ -57,9 +58,18 @@ include __DIR__ . '/includes/header.php';
             </div>
         </div>
 
+        <!-- Quick Filter Category Chips -->
+        <div class="category-quick-chips">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Quick Filter:</span>
+            <button type="button" class="cat-chip-btn <?= empty($initialCategory) ? 'active' : '' ?>" data-cat="">All</button>
+            <?php foreach ($categories as $cat): ?>
+                <button type="button" class="cat-chip-btn <?= ($initialCategory === $cat) ? 'active' : '' ?>" data-cat="<?= e($cat) ?>"><?= e($cat) ?></button>
+            <?php endforeach; ?>
+        </div>
+
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem;">
-            <span id="results-count-text" style="font-size: 0.88rem; color: var(--text-secondary);">Loading members...</span>
-            <span style="font-size: 0.82rem; color: var(--text-muted);">Results update automatically</span>
+            <span id="results-count-text" style="font-size: 0.88rem; font-weight: 600; color: var(--text-secondary);">Loading members...</span>
+            <span style="font-size: 0.82rem; color: var(--text-muted);">Real-time search results</span>
         </div>
     </div>
 
@@ -133,6 +143,58 @@ include __DIR__ . '/includes/header.php';
     box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
+.clear-search-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.3rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+}
+
+.clear-search-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface-elevated);
+}
+
+.category-quick-chips {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.cat-chip-btn {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    padding: 5px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.cat-chip-btn:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.cat-chip-btn.active {
+    background: var(--gradient-brand);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px var(--primary-glow);
+}
+
 .filter-select-wrapper {
     flex: 1;
     min-width: 170px;
@@ -144,8 +206,8 @@ include __DIR__ . '/includes/header.php';
 
 .discover-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.85rem;
 }
 
 @media (max-width: 768px) {

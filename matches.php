@@ -18,11 +18,17 @@ include __DIR__ . '/includes/header.php';
 
 <div class="matches-page-container">
     <div class="matches-header">
-        <span class="badge-pill bg-primary" style="margin-bottom: 0.5rem; display: inline-block;">Matching Algorithm</span>
+        <span class="badge-pill bg-primary" style="margin-bottom: 0.75rem; display: inline-block;">Matching Algorithm</span>
         <h1 class="matches-title">Skill Compatibility Engine</h1>
         <p class="matches-desc">
             We analyze your offered skills and wanted learning wishlist to discover peers where both parties benefit equally.
         </p>
+
+        <!-- Live Match Filter Search Bar -->
+        <div style="max-width: 480px; margin: 1.5rem auto 0; position: relative;">
+            <input type="text" id="match-search-input" class="form-input" placeholder="Filter matches by name, skill, or location..." style="padding-left: 2.5rem; border-radius: var(--radius-full);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
     </div>
 
     <!-- Section 1: Strong Reciprocal Matches -->
@@ -40,10 +46,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div class="matches-grid" id="two-way-matches-grid">
-            <div style="text-align: center; padding: 3rem;" class="col-span-full">
-                <span class="spinner spinner-primary" style="width: 32px; height: 32px;"></span>
-                <p style="margin-top: 1rem; color: var(--text-muted);">Analyzing database for 2-way matches...</p>
-            </div>
+            <div class="skeleton-card col-span-full" style="height: 180px;"></div>
         </div>
     </div>
 
