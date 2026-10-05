@@ -1,8 +1,8 @@
 <div align="center">
 
-🤝 Skilled Swap Marketplace
+# 🤝 Skilled Swap Marketplace
 
-Share Skills • Exchange Knowledge • Grow Together
+### Share Skills • Exchange Knowledge • Grow Together
 
 A modern peer-to-peer skill-sharing platform that connects people who want to teach what they know and learn something new in return.
 
@@ -16,324 +16,246 @@ A modern peer-to-peer skill-sharing platform that connects people who want to te
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5">
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3">
-  <img src="https://img.shields.io/badge/Fetch%20API-HTTP-4CAF50?style=flat-square" alt="Fetch API">
-  <img src="https://img.shields.io/badge/PDO-PHP%20Database-777BB4?style=flat-square" alt="PDO">
-  <img src="https://img.shields.io/badge/Apache-Server-D22128?style=flat-square&logo=apache&logoColor=white" alt="Apache">
-  <img src="https://img.shields.io/badge/XAMPP-Local%20Development-FB7A24?style=flat-square&logo=xampp&logoColor=white" alt="XAMPP">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/Fetch%20API-HTTP-4CAF50?style=flat-square">
+  <img src="https://img.shields.io/badge/PDO-PHP%20Database-777BB4?style=flat-square">
+  <img src="https://img.shields.io/badge/Apache-Server-D22128?style=flat-square&logo=apache&logoColor=white">
+  <img src="https://img.shields.io/badge/XAMPP-Local%20Development-FB7A24?style=flat-square&logo=xampp&logoColor=white">
 </p>
 
 </div>
 
-📑 Table of Contents
+---
 
-📌 About the Project
+## 📑 Table of Contents
 
-🎯 Problem Statement
+- [📌 About the Project](#-about-the-project)
+- [🎯 Problem Statement](#-problem-statement)
+- [🎯 Project Objectives](#-project-objectives)
+- [✨ Features](#-features)
+- [🔄 How It Works](#-how-it-works)
+- [🛠️ Technology Stack](#️-technology-stack)
+- [🏗️ System Architecture](#️-system-architecture)
+- [📁 Project Structure](#-project-structure)
+- [🗄️ Database](#️-database)
+- [🔌 API & Fetch API](#-api--fetch-api)
+- [🔐 Security](#-security)
+- [🚀 Installation & Setup](#-installation--setup)
+- [🖥️ Screenshots](#️-screenshots)
+- [📚 Documentation](#-documentation)
+- [🔮 Future Improvements](#-future-improvements)
+- [🤝 Contributing](#-contributing)
+- [👨‍💻 Author](#-author)
+- [📄 License](#-license)
+- [⭐ Support](#-support)
 
-🎯 Project Objectives
+---
 
-✨ Features
+## 📌 About the Project
 
-🔄 How It Works
-
-🛠️ Technology Stack
-
-🏗️ System Architecture
-
-📁 Project Structure
-
-🗄️ Database
-
-🔌 API & Fetch API
-
-🔐 Security
-
-🚀 Installation & Setup
-
-🖥️ Screenshots
-
-📚 Documentation
-
-🔮 Future Improvements
-
-🤝 Contributing
-
-👨‍💻 Author
-
-📄 License
-
-⭐ Support
-
-📌 About the Project
-
-Skilled Swap Marketplace is a peer-to-peer skill-sharing platform designed to help people exchange knowledge and skills with one another.
+**Skilled Swap Marketplace** is a peer-to-peer skill-sharing platform designed to help people exchange knowledge and skills with one another.
 
 Instead of paying for every skill they want to learn, users can offer something they already know and find someone who can teach them something they want to learn.
 
-💡 Example
+### 💡 Example
 
-A developer can teach Web Development while learning Graphic Design.
+- A developer can teach **Web Development** while learning **Graphic Design**.
+- A designer can teach **Photoshop** while learning **JavaScript**.
+- A photographer can teach **Photography** while learning **Video Editing**.
+- A musician can teach **Music** while learning another creative skill.
 
-A designer can teach Photoshop while learning JavaScript.
+### What Users Can Do
 
-A photographer can teach Photography while learning Video Editing.
+- Create and manage profiles
+- Add skills they can teach
+- Add skills they want to learn
+- Discover other users
+- Find compatible skill matches
+- Send and manage swap requests
+- Communicate with other users
+- Receive notifications
+- Manage account settings
 
-A musician can teach Music while learning another creative skill.
+---
 
-The platform allows users to:
-
-Create and manage their profiles
-
-Add skills they can teach
-
-Add skills they want to learn
-
-Discover other users
-
-Find compatible skill matches
-
-Send and manage swap requests
-
-Communicate with other users
-
-Receive notifications
-
-Manage their account and settings
-
-🎯 Problem Statement
+## 🎯 Problem Statement
 
 Many people possess valuable skills but have difficulty finding the right people to exchange knowledge with.
 
 Traditional learning methods may require:
 
-Paid courses
+- Paid courses
+- Tutors
+- Expensive training
+- Multiple platforms
+- Limited peer-to-peer interaction
 
-Tutors
+**Skilled Swap Marketplace** provides a centralized platform where users can discover people with complementary skills and create mutually beneficial learning exchanges.
 
-Expensive training
+---
 
-Multiple platforms
+## 🎯 Project Objectives
 
-Limited peer-to-peer interaction
+The main objectives of the project are:
 
-Skilled Swap Marketplace provides a centralized platform where users can discover people with complementary skills and create mutually beneficial learning exchanges.
+1. Provide a platform for **peer-to-peer learning**.
+2. Allow users to showcase the skills they can offer.
+3. Help users discover skills they want to learn.
+4. Make it easier to find compatible skill partners.
+5. Provide a system for sending and managing swap requests.
+6. Allow users to communicate through the platform.
+7. Implement secure user authentication and authorization.
+8. Provide administrative and moderation functionality.
+9. Demonstrate a complete full-stack web application using PHP, MySQL, JavaScript, HTML, and CSS.
 
-🎯 Project Objectives
+---
 
-The main objectives of Skilled Swap Marketplace are:
+## ✨ Features
 
-Provide a platform for peer-to-peer learning.
+| Feature | Description |
+|---|---|
+| 🔐 **User Authentication** | Registration, login, sessions, password hashing, and logout |
+| 👤 **User Profiles** | Manage personal profiles and skills |
+| 🛠️ **Skill Management** | Add skills users can offer and skills they want to learn |
+| 🔎 **Skill Discovery** | Discover users and available skills |
+| 🤝 **Skill Matching** | Find users with compatible skills |
+| 📩 **Swap Requests** | Send, accept, decline, and manage skill-swap requests |
+| 💬 **Messaging** | Communicate with other users |
+| 🔔 **Notifications** | Receive updates related to platform activity |
+| ⚙️ **Settings** | Manage account and application settings |
+| 🛡️ **Admin & Moderation** | Administrative functionality for managing the platform |
 
-Allow users to showcase the skills they can offer.
+---
 
-Help users discover skills they want to learn.
+## 🔄 How It Works
 
-Make it easier to find compatible skill partners.
+### 1. Register
 
-Provide a system for sending and managing swap requests.
+Create an account using the registration system.
 
-Allow users to communicate through the platform.
+### 2. Create Your Profile
 
-Implement secure user authentication and authorization.
+Add your personal information and build your profile.
 
-Provide administrative and moderation functionality.
+### 3. Add Skills
 
-Demonstrate a complete full-stack web application using PHP, MySQL, JavaScript, HTML, and CSS.
+Specify:
 
-✨ Features
+- Skills you can teach
+- Skills you want to learn
 
-Feature
+### 4. Discover Users
 
-Description
+Browse other users and their available skills.
 
-🔐 User Authentication
+### 5. Find a Match
 
-Registration, login, sessions, password hashing, and logout
+Look for users whose skills complement what you want to learn.
 
-👤 User Profiles
+### 6. Send a Swap Request
 
-Manage personal profiles and skills
+Send a request to another user to propose a skill exchange.
 
-🛠️ Skill Management
+### 7. Accept or Decline
 
-Add skills users can offer and skills they want to learn
+The receiving user can manage the request.
 
-🔎 Skill Discovery
+### 8. Connect & Exchange
 
-Discover users and available skills
+Once the request is accepted, users can communicate and exchange knowledge.
 
-🤝 Skill Matching
+---
 
-Find users with compatible skills
+## 🛠️ Technology Stack
 
-📩 Swap Requests
+### Frontend
 
-Send, accept, decline, and manage skill-swap requests
+| Technology | Purpose |
+|---|---|
+| **HTML5** | Page structure |
+| **CSS3** | Styling and responsive interface |
+| **JavaScript ES6+** | Client-side functionality |
+| **Fetch API** | Asynchronous communication with PHP endpoints |
 
-💬 Messaging
+### Backend
 
-Communicate with other users
+| Technology | Purpose |
+|---|---|
+| **PHP 8.x** | Server-side application logic |
+| **PDO** | Database interaction |
+| **JSON** | Data exchange between frontend and backend |
 
-🔔 Notifications
+### Database
 
-Receive updates related to platform activity
+| Technology | Purpose |
+|---|---|
+| **MySQL** | Application database |
+| **phpMyAdmin** | Database administration |
 
-⚙️ Settings
+### Development Tools
 
-Manage account and application settings
+| Tool | Purpose |
+|---|---|
+| **Apache** | Local web server |
+| **XAMPP** | Local PHP/MySQL development environment |
+| **Git** | Version control |
+| **GitHub** | Source-code hosting and collaboration |
 
-🛡️ Admin & Moderation
+---
 
-Administrative functionality for managing the platform
+## 🏗️ System Architecture
 
-🔄 How It Works
+Skilled Swap Marketplace follows a simple web application architecture.
 
-Register — Create an account.
+### Architecture Layers
 
-Create Profile — Add your personal information.
+**Frontend**
 
-Add Skills — Specify skills you can teach and skills you want to learn.
-
-Discover Users — Browse users and their available skills.
-
-Find a Match — Look for users with complementary skills.
-
-Send a Swap Request — Propose a skill exchange.
-
-Accept or Decline — The receiving user manages the request.
-
-Connect & Exchange — Communicate and exchange knowledge.
-
-🛠️ Technology Stack
-
-Frontend
-
-Technology
-
-Purpose
-
-HTML5
-
-Page structure
-
-CSS3
-
-Styling and responsive interface
-
-JavaScript ES6+
-
-Client-side functionality
-
-Fetch API
-
-Asynchronous communication with PHP endpoints
-
-Backend
-
-Technology
-
-Purpose
-
-PHP 8.x
-
-Server-side application logic
-
-PDO
-
-Database interaction
-
-JSON
-
-Data exchange between frontend and backend
-
-Database
-
-Technology
-
-Purpose
-
-MySQL
-
-Application database
-
-phpMyAdmin
-
-Database administration
-
-Development Tools
-
-Tool
-
-Purpose
-
-Apache
-
-Local web server
-
-XAMPP
-
-Local PHP/MySQL development environment
-
-Git
-
-Version control
-
-GitHub
-
-Source-code hosting and collaboration
-
-🏗️ System Architecture
-
-Skilled Swap Marketplace follows a simple three-layer web application architecture.
-
-Frontend
 HTML + CSS + JavaScript
 
 ⬇️
 
-Fetch API / HTTP
+**Fetch API / HTTP**
 
 ⬇️
 
-PHP Application
-Business Logic + API
+**PHP Application**
+
+Business Logic + API Endpoints
 
 ⬇️
 
-PDO
+**PDO**
 
 ⬇️
 
-MySQL Database
+**MySQL Database**
 
-🔄 Architecture Flow
+### Data Flow
 
-The frontend communicates with PHP endpoints using the Fetch API. PHP processes requests and interacts with MySQL through PDO before returning the required response, commonly in JSON format.
+The application follows this general request flow:
 
-Frontend → Fetch API → PHP/API → PDO → MySQL → JSON Response → Frontend UI
+**User Action → JavaScript → Fetch API → PHP API → PDO → MySQL → JSON Response → UI Update**
 
-📁 Project Structure
+This approach allows the frontend to communicate with the backend asynchronously without requiring a complete page reload for every operation.
+
+---
+
+## 📁 Project Structure
+
 
 Skilled-swap-marketplace/
 │
 ├── api/
-│   └── API endpoints and backend request handlers
-│
 ├── assets/
 │   ├── css/
 │   ├── js/
 │   └── images/
 │
 ├── config/
-│   └── Database and application configuration
-│
 ├── database/
-│   └── Database-related files and SQL resources
-│
 ├── includes/
-│   └── Reusable PHP components and shared functionality
 │
 ├── admin.php
 ├── dashboard.php
@@ -350,269 +272,3 @@ Skilled-swap-marketplace/
 │
 ├── DOCUMENTATION.md
 └── README.md
-
-The repository structure separates reusable components, database configuration, API functionality, frontend assets, and application pages to keep the project organized and maintainable.
-
-🗄️ Database
-
-The application uses MySQL as its database system.
-
-Database interaction is handled through PHP Data Objects (PDO).
-
-Database Design
-
-The database stores information related to:
-
-Users
-
-Skills
-
-User skill relationships
-
-Swap requests
-
-Messages
-
-Notifications
-
-Other application-related data
-
-🔗 High-Level Relationship
-
-Users
-
-Skills
-
-Swap Requests
-
-Messages
-
-Notifications
-
-🔑 Database Concepts Used
-
-Primary Keys
-
-Foreign Keys
-
-Unique Identifiers
-
-Relational Database Structure
-
-Prepared Statements
-
-PDO Database Connection
-
-Prepared statements are used with PDO to help protect database queries against SQL injection when implemented correctly.
-
-🔌 API & Fetch API
-
-The application uses JavaScript's Fetch API to communicate asynchronously with PHP backend endpoints.
-
-This allows parts of the interface to communicate with the server without requiring a complete page reload.
-
-🔄 Request Flow
-
-User Action → JavaScript → Fetch API → PHP API Endpoint → PDO → MySQL → PHP Response → JSON → JavaScript → UI Update
-
-Example
-
-fetch("api/example.php", {
-    method: "POST",
-    body: formData
-})
-.then(response => response.json())
-.then(data => {
-    // Update the interface
-});
-
-🔐 Security
-
-The project includes several security practices:
-
-🔒 Password hashing
-
-🛡️ PDO prepared statements
-
-🔑 Session-based authentication
-
-✅ Input validation
-
-🧹 Input sanitization where required
-
-👮 Authentication and role-based access control
-
-🔐 Protected database interaction
-
-Security controls help protect user accounts, database operations, and application functionality.
-
-🚀 Installation & Setup
-
-📋 Prerequisites
-
-Before running the project locally, install:
-
-XAMPP
-
-PHP 8.x
-
-MySQL
-
-Apache
-
-Git
-
-A modern web browser
-
-1️⃣ Clone the Repository
-
-git clone https://github.com/Kushal0789/Skilled-swap-marketplace.git
-cd Skilled-swap-marketplace
-
-2️⃣ Move the Project to XAMPP
-
-Move the project folder into:
-
-C:\xampp\htdocs\
-
-The final path should look like:
-
-C:\xampp\htdocs\Skilled-swap-marketplace\
-
-3️⃣ Start XAMPP
-
-Open the XAMPP Control Panel and start:
-
-Apache
-
-MySQL
-
-4️⃣ Open phpMyAdmin
-
-Open:
-
-http://localhost/phpmyadmin
-
-Create the required database and import the SQL database file from the project's database directory.
-
-5️⃣ Configure the Database
-
-Update the database configuration according to your local environment.
-
-Typical XAMPP configuration:
-
-Host: localhost
-Username: root
-Password:
-Database: Your_Database_Name
-
-6️⃣ Run the Project
-
-Open:
-
-http://localhost/Skilled-swap-marketplace/
-
-The application should now be available locally.
-
-🖥️ Screenshots
-
-🏠 Home Page
-
-<img src="https://github.com/user-attachments/assets/4fae9936-c152-4327-bacf-134129c7dc66" alt="Skilled Swap Marketplace Home Page">
-
-🔐 Login Page
-
-<img src="https://github.com/user-attachments/assets/d86f8377-e874-475d-9844-079c907b055b" alt="Skilled Swap Marketplace Login Page">
-
-📊 Dashboard
-
-<img src="https://github.com/user-attachments/assets/b83fe93f-61ab-4fe6-9394-37ca37c02e5b" alt="Skilled Swap Marketplace Dashboard">
-
-🔎 Discover Page
-
-<img src="https://github.com/user-attachments/assets/7afb55d8-fd26-4d5d-9c3e-f6b2c9dabdf3" alt="Skilled Swap Marketplace Discover Page">
-
-📚 Documentation
-
-Additional project documentation is available in:
-
-DOCUMENTATION.md
-
-The documentation provides additional information about the project and its implementation.
-
-🔮 Future Improvements
-
-Possible future improvements include:
-
-⭐ User ratings and reviews
-
-🔎 Advanced skill search and filtering
-
-📅 Session scheduling
-
-📱 Improved mobile responsiveness
-
-🔔 Enhanced notification system
-
-🏆 Achievement system
-
-📊 User and platform analytics
-
-💼 User portfolios
-
-🛡️ Advanced role-based access control
-
-🌐 Production deployment
-
-⚡ API and database optimization
-
-🤝 Contributing
-
-Contributions and suggestions are welcome.
-
-Contribution Workflow
-
-Fork → Create Branch → Make Changes → Test → Commit → Push → Pull Request
-
-Example:
-
-git checkout -b feature/new-feature
-git add .
-git commit -m "Add new feature"
-git push origin feature/new-feature
-
-Then create a Pull Request on GitHub.
-
-👨‍💻 Author
-
-<div align="center">
-
-Kushal Bhusal
-
-<a href="https://github.com/Kushal0789">
-  <img src="https://img.shields.io/badge/GitHub-Kushal0789-181717?style=for-the-badge&logo=github" alt="GitHub">
-</a>
-
-<br><br>
-
-Built as a full-stack web application project focused on peer-to-peer skill exchange.
-
-</div>
-
-📄 License
-
-This project currently does not include a separate open-source license.
-
-If the project is intended to be distributed as open-source software, an appropriate license such as the MIT License can be added.
-
-⭐ Support
-
-If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
-
-<div align="center">
-
-🤝 Share What You Know. Learn What You Love. Grow Together.
-
-Built with PHP • MySQL • JavaScript • HTML • CSS
-
-</div>
