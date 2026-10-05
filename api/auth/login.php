@@ -61,7 +61,7 @@ try {
     // Remove password hash from response
     unset($user['password']);
 
-    $redirectUrl = ($user['role'] === 'admin' && isset($input['admin_redirect'])) ? 'admin.php' : 'dashboard.php';
+    $redirectUrl = ($user['role'] === 'admin') ? 'admin.php' : 'dashboard.php';
 
     json_response(true, 'Login successful! Welcome back, ' . $user['name'] . '.', [
         'user'        => $user,

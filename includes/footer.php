@@ -105,9 +105,9 @@ if (!defined('APP_INIT')) {
     </div>
 
     <!-- Core Application JavaScript -->
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/app.js?v=<?= @filemtime(__DIR__ . '/../assets/js/app.js') ?: time() ?>"></script>
     <?php if (isset($pageScript) && !empty($pageScript)): ?>
-        <script src="assets/js/<?= e($pageScript) ?>"></script>
+        <script src="assets/js/<?= e($pageScript) ?>?v=<?= @filemtime(__DIR__ . '/../assets/js/' . $pageScript) ?: time() ?>"></script>
     <?php endif; ?>
 </body>
 </html>

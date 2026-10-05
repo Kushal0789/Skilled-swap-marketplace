@@ -66,10 +66,11 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
 
             <!-- Desktop Navigation Links -->
             <nav class="nav-links" id="desktop-nav">
-                <a href="index.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'index.php') ? 'active' : '' ?>">Home</a>
-                <a href="discover.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'discover.php') ? 'active' : '' ?>">Discover Skills</a>
-                
-                <?php if ($isLoggedIn): ?>
+                <?php if ($isLoggedIn && is_admin()): ?>
+                    <?php /* Admin: no top nav — use the inner Admin Console navigation */ ?>
+                <?php elseif ($isLoggedIn): ?>
+                    <a href="index.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'index.php') ? 'active' : '' ?>">Home</a>
+                    <a href="discover.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'discover.php') ? 'active' : '' ?>">Discover Skills</a>
                     <a href="dashboard.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'dashboard.php') ? 'active' : '' ?>">Dashboard</a>
                     <a href="matches.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'matches.php') ? 'active' : '' ?>">
                         Matches
@@ -146,14 +147,12 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
                                 <p class="info-username">@<?= e($currentUser['username']) ?></p>
                             </div>
                             <div class="dropdown-divider"></div>
-                            <a href="dashboard.php" class="dropdown-item">Dashboard</a>
-                            <a href="profile.php" class="dropdown-item">My Profile & Skills</a>
-                            <a href="requests.php" class="dropdown-item">Swap Requests</a>
-                            <a href="messages.php" class="dropdown-item">Chat Messages</a>
-                            <a href="settings.php" class="dropdown-item">Settings</a>
                             <?php if (is_admin()): ?>
-                                <div class="dropdown-divider"></div>
-                                <a href="admin.php" class="dropdown-item text-primary font-bold">Admin Console</a>
+                                <a href="admin.php" class="dropdown-item">Admin Console</a>
+                                <a href="settings.php" class="dropdown-item">Settings</a>
+                            <?php else: ?>
+                                <a href="profile.php" class="dropdown-item">My Profile &amp; Skills</a>
+                                <a href="settings.php" class="dropdown-item">Settings</a>
                             <?php endif; ?>
                             <div class="dropdown-divider"></div>
                             <a href="logout.php" class="dropdown-item text-danger">Sign Out</a>
@@ -176,18 +175,19 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
         <!-- Mobile Drawer Navigation -->
         <div class="mobile-drawer hidden" id="mobile-drawer">
             <div class="mobile-nav-links">
-                <a href="index.php" class="mobile-nav-link">Home</a>
-                <a href="discover.php" class="mobile-nav-link">Discover Skills</a>
-                <?php if ($isLoggedIn): ?>
+                <?php if ($isLoggedIn && is_admin()): ?>
+                    <a href="admin.php" class="mobile-nav-link">Admin Console</a>
+                    <a href="settings.php" class="mobile-nav-link">Settings</a>
+                    <a href="logout.php" class="mobile-nav-link text-danger">Sign Out</a>
+                <?php elseif ($isLoggedIn): ?>
+                    <a href="index.php" class="mobile-nav-link">Home</a>
+                    <a href="discover.php" class="mobile-nav-link">Discover Skills</a>
                     <a href="dashboard.php" class="mobile-nav-link">Dashboard</a>
                     <a href="matches.php" class="mobile-nav-link">Matches</a>
                     <a href="requests.php" class="mobile-nav-link">Requests</a>
                     <a href="messages.php" class="mobile-nav-link">Messages (<?= $unreadMsgs ?>)</a>
-                    <a href="profile.php" class="mobile-nav-link">Profile & Skills</a>
+                    <a href="profile.php" class="mobile-nav-link">Profile &amp; Skills</a>
                     <a href="settings.php" class="mobile-nav-link">Settings</a>
-                    <?php if (is_admin()): ?>
-                        <a href="admin.php" class="mobile-nav-link text-primary">Admin Console</a>
-                    <?php endif; ?>
                     <a href="logout.php" class="mobile-nav-link text-danger">Sign Out</a>
                 <?php else: ?>
                     <a href="login.php" class="mobile-nav-link">Sign In</a>

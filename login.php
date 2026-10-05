@@ -11,7 +11,8 @@ require_once __DIR__ . '/includes/functions.php';
 
 // Redirect if already logged in
 if (is_logged_in()) {
-    header('Location: dashboard.php');
+    $redirect = is_admin() ? 'admin.php' : 'dashboard.php';
+    header('Location: ' . $redirect);
     exit;
 }
 
