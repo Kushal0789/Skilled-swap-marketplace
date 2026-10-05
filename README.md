@@ -1,188 +1,247 @@
+<div align="center">
 
 # 🤝 Skilled Swap Marketplace
 
 ### Share Skills • Exchange Knowledge • Grow Together
 
-A peer-to-peer skill-sharing platform that connects people who want to teach what they know and learn something new in return.
+A modern peer-to-peer skill-sharing platform that connects people who
+want to teach what they know and learn something new in return.
 
-Skilled Swap Marketplace makes it easier to discover compatible learning partners, exchange skills, and build meaningful connections through collaborative learning.
+<br>
 
----
+<a href="https://github.com/Kushal0789/Skilled-swap-marketplace">
+  <img src="https://img.shields.io/badge/💻_GitHub-Repository-181717?style=for-the-badge&logo=github" alt="GitHub">
+</a>
 
-## 🌟 About the Project
+<a href="#-features">
+  <img src="https://img.shields.io/badge/✨_Features-Explore-6C63FF?style=for-the-badge" alt="Features">
+</a>
 
-Everyone has something valuable to teach and something new to learn.
+<br><br>
 
-**Skilled Swap Marketplace** is designed to make skill exchange simple and accessible. Users can showcase their expertise, discover people with complementary learning interests, propose skill swaps, and communicate with other members.
+<img src="https://img.shields.io/badge/PHP-8.x-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+<img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+<img src="https://img.shields.io/badge/HTML5-Frontend-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
+<img src="https://img.shields.io/badge/CSS3-Styling-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
+<img src="https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+<img src="https://img.shields.io/badge/Fetch_API-AJAX-FF6B35?style=for-the-badge" alt="Fetch API">
+<img src="https://img.shields.io/badge/PDO-Secure_DB-4CAF50?style=for-the-badge" alt="PDO">
 
-The goal is to encourage a community where knowledge is shared and everyone has an opportunity to grow.
+<br><br>
 
----
-
-## ✨ Features
-
-- 🔐 **User Authentication** — Registration, login, session management, and password hashing.
-- 🎯 **Skill Matching** — Discover compatible users based on skills offered and skills requested.
-- 🔄 **Swap Proposals** — Send, accept, or decline skill exchange proposals.
-- 💬 **In-App Messaging** — Communicate with matched users to coordinate learning sessions.
-- 🔔 **Notifications** — Receive updates about swap proposals and other activities.
-- 🛡️ **Admin & Moderation** — Basic tools for monitoring platform statistics, user reports, and listed skills.
-- 📚 **Skill Discovery** — Explore skills and connect with people who share your learning interests.
-
----
-
-## 🛠️ Tech Stack
-
-| Technology | Purpose |
-|------------|---------|
-| PHP 8.x | Backend development |
-| MySQL | Database management |
-| PDO | Database interaction |
-| HTML5 | Web page structure |
-| CSS3 | Styling and responsive layouts |
-| Vanilla JavaScript (ES6+) | Frontend interactions |
-| Git & GitHub | Version control and project hosting |
+</div>
 
 ---
 
-## 🚀 Getting Started
+## 📌 Table of Contents
 
-Follow these steps to run the project locally.
-
-### Prerequisites
-
-Make sure you have the following installed:
-
-- PHP 8.x or higher
-- MySQL
-- Apache or another compatible web server
-- XAMPP, WAMP, or an equivalent local development environment
-- Git
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/Kushal0789/Skilled-swap-marketplace.git
-```
-
-### 2. Open the project
-
-```bash
-cd Skilled-swap-marketplace
-```
-
-Alternatively, if you use XAMPP, place the project folder inside your XAMPP `htdocs` directory.
-
-### 3. Set up the database
-
-1. Start Apache and MySQL from your local server environment.
-2. Open phpMyAdmin in your browser.
-3. Create a MySQL database for the project.
-4. Import the SQL database file included in the repository, if provided.
-5. Update the database connection settings in the project's PHP configuration file.
-
-> **Note:** Use the actual database name, SQL filename, and configuration file included in your project.
-
-### 4. Configure the application
-
-Check the project's database connection settings and configure:
-
-- Database host
-- Database name
-- Database username
-- Database password
-
-Use the settings appropriate for your local MySQL installation.
-
-### 5. Run the application
-
-Start Apache and MySQL, then open the project through your local web server.
-
-For a PHP built-in development server, you can use:
-
-```bash
-php -S localhost:8000
-```
-
-Run this command from the appropriate application directory, depending on your project structure.
-
-Then visit:
-
-http://localhost:8000
-
-If you are using XAMPP, open the project through its corresponding `localhost` URL instead.
+- [🌟 About the Project](#-about-the-project)
+- [🎯 Problem Statement](#-problem-statement)
+- [🎯 Project Objectives](#-project-objectives)
+- [✨ Features](#-features)
+- [🔄 How It Works](#-how-it-works)
+- [🛠️ Technology Stack](#️-technology-stack)
+- [🏗️ System Architecture](#️-system-architecture)
+- [📁 Project Structure](#-project-structure)
+- [🗄️ Database](#️-database)
+- [⚡ Fetch API](#-fetch-api)
+- [🔐 Security](#-security)
+- [🚀 Installation & Setup](#-installation--setup)
+- [📸 Screenshots](#-screenshots)
+- [📚 Documentation](#-documentation)
+- [🔮 Future Improvements](#-future-improvements)
+- [🤝 Contributing](#-contributing)
+- [👨‍💻 Author](#-author)
+- [📄 License](#-license)
 
 ---
 
-## 🔄 How It Works
+# 🌟 About the Project
 
-1. **Create an account** — Join the marketplace and set up your profile.
-2. **Share your skills** — Add the skills you can teach.
-3. **Discover opportunities** — Explore skills and find compatible learning partners.
-4. **Propose a swap** — Send a proposal to exchange knowledge.
-5. **Connect and learn** — Communicate with your partner and coordinate your learning sessions.
+**Skilled Swap Marketplace** is a web-based platform designed to make
+peer-to-peer learning easier through skill exchange.
 
----
+Instead of paying for every skill someone wants to learn, users can
+share their existing knowledge in exchange for learning another skill.
 
-## 🎯 Project Objectives
+For example:
 
-- Encourage peer-to-peer learning and knowledge sharing.
-- Help users discover learning partners with complementary skills.
-- Make skill exchange more accessible and organized.
-- Build a collaborative community around learning and personal development.
-- Provide practical experience in full-stack web development.
+- 💻 A developer can teach web development while learning graphic design.
+- 🎨 A designer can teach Photoshop while learning JavaScript.
+- 📸 A photographer can teach photography while learning video editing.
+- 🎵 A musician can teach music while learning another creative skill.
 
----
+The platform provides a centralized environment where users can
+showcase their skills, discover compatible learning partners, propose
+skill swaps, and communicate with other members.
 
-## 🔮 Future Improvements
-
-Potential features for future development include:
-
-- ⭐ User reviews and feedback
-- 🔎 Advanced search and filtering
-- 👤 Enhanced user profiles and skill portfolios
-- 📅 Learning session scheduling
-- 📱 Improved mobile experience
-- 🎨 A more polished and responsive user interface
-- 🏆 Achievements and learning milestones
+> **Everyone has something to teach and something new to learn.**
 
 ---
 
-## 📸 Screenshots
+# 🎯 Problem Statement
 
-<img width="1901" height="871" alt="image" src="https://github.com/user-attachments/assets/bd5a4e62-79b7-43cb-be50-0928c7174aa6" />
-<img width="1901" height="876" alt="image" src="https://github.com/user-attachments/assets/23be595e-7f58-47a1-947f-8e1ef5908767" />
+People have different skills and knowledge, but finding someone who can
+teach a desired skill while also benefiting from the skills they offer
+can be difficult.
 
----
+Traditional learning methods may require:
 
-## 🤝 Contributing
+- Paid courses
+- Private tutors
+- Expensive training
+- Multiple platforms for communication and discovery
 
-Contributions, suggestions, and feedback are welcome!
-
-1. Fork the repository.
-2. Create a new branch for your changes.
-3. Make your improvements.
-4. Commit your changes.
-5. Open a pull request describing your contribution.
-
----
-
-## 👨‍💻 Author
-
-**Kushal Bhusal**
-
-GitHub: [@Kushal0789](https://github.com/Kushal0789)
-
-Project: [Skilled Swap Marketplace](https://github.com/Kushal0789/Skilled-swap-marketplace)
+**Skilled Swap Marketplace** provides a single platform where users can
+discover people with complementary skills and exchange knowledge
+directly.
 
 ---
 
-## 📄 License
+# 🎯 Project Objectives
 
-Add a license to this project if you intend to distribute it for reuse. Until a license is selected and included, all rights remain with the copyright holder.
+The main objectives of the project are:
+
+- 🤝 Encourage peer-to-peer learning and knowledge sharing.
+- 🔍 Help users discover people with complementary skills.
+- 🎯 Make skill exchange easier and more organized.
+- 💬 Provide communication between skill-exchange partners.
+- 🔄 Allow users to manage skill-swap proposals.
+- 🔐 Provide secure authentication and account management.
+- 🛡️ Provide administrative and moderation functionality.
+- 💻 Demonstrate practical full-stack web development.
 
 ---
 
-<p align="center">
-  <b>🤝 Share what you know. Learn what you love. Grow together.</b>
-</p>
+# ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🔐 User Authentication
+
+- User registration
+- Secure login
+- Session management
+- Password hashing
+- Logout functionality
+
+</td>
+
+<td width="50%">
+
+### 👤 User Profiles
+
+- Personal profiles
+- Skills offered
+- Skills requested
+- Profile management
+- Account settings
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+### 🔍 Skill Discovery
+
+- Explore available skills
+- Discover other users
+- Find learning opportunities
+- Explore compatible skills
+
+</td>
+
+<td>
+
+### 🎯 Skill Matching
+
+- Match users based on skills
+- Discover complementary interests
+- Find potential learning partners
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+### 🔄 Swap Proposals
+
+- Send swap proposals
+- Receive proposals
+- Accept proposals
+- Decline proposals
+- Track proposal status
+
+</td>
+
+<td>
+
+### 💬 In-App Messaging
+
+- Communicate with other users
+- Discuss skill exchanges
+- Coordinate learning sessions
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+### 🔔 Notifications
+
+- Swap proposal updates
+- Activity notifications
+- User interaction updates
+
+</td>
+
+<td>
+
+### 🛡️ Admin & Moderation
+
+- Platform monitoring
+- User management
+- Skill monitoring
+- Basic moderation functionality
+
+</td>
+</tr>
+</table>
+
+---
+
+# 🔄 How It Works
+
+The basic workflow of Skilled Swap Marketplace is:
+
+```text
+        👤 Register
+             │
+             ▼
+      📝 Create Profile
+             │
+             ▼
+        🎯 Add Skills
+             │
+             ▼
+      🔍 Discover Users
+             │
+             ▼
+      🤝 Find Skill Match
+             │
+             ▼
+       📩 Send Proposal
+             │
+             ▼
+     ✅ Accept / Decline
+             │
+             ▼
+        💬 Connect
+             │
+             ▼
+      🧠 Exchange Skills
