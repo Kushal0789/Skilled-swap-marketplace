@@ -272,3 +272,191 @@ Skilled-swap-marketplace/
 │
 ├── DOCUMENTATION.md
 └── README.md
+
+The project is organized into separate areas for API endpoints, frontend assets, configuration, database resources, reusable components, and application pages.
+
+🗄️ Database
+
+The application uses MySQL as its database system.
+
+Database interaction is handled through PHP Data Objects (PDO).
+
+Database Information
+
+The database stores information related to:
+
+Users
+Skills
+User skill relationships
+Swap requests
+Messages
+Notifications
+Other application-related data
+Database Concepts Used
+Primary Keys
+Foreign Keys
+Unique Identifiers
+Relational Database Structure
+Prepared Statements
+PDO Database Connection
+
+Prepared statements are used with PDO to help protect database queries against SQL injection when implemented correctly.
+
+🔌 API & Fetch API
+
+The application uses JavaScript's Fetch API to communicate asynchronously with PHP backend endpoints.
+
+This allows parts of the interface to communicate with the server without requiring a complete page reload.
+
+Request Flow
+
+User Action → JavaScript → Fetch API → PHP API Endpoint → PDO → MySQL → PHP Response → JSON → JavaScript → UI Update
+
+Example
+fetch("api/example.php", {
+    method: "POST",
+    body: formData
+})
+.then(response => response.json())
+.then(data => {
+    // Update the interface
+});
+🔐 Security
+
+The project includes several security practices:
+
+🔒 Password hashing
+🛡️ PDO prepared statements
+🔑 Session-based authentication
+✅ Input validation
+🧹 Input sanitization where required
+👮 Authentication and role-based access control
+🔐 Protected database interaction
+
+These controls help protect user accounts, database operations, and application functionality.
+
+🚀 Installation & Setup
+Prerequisites
+
+Before running the project locally, install:
+
+XAMPP
+PHP 8.x
+MySQL
+Apache
+Git
+A modern web browser
+1. Clone the Repository
+git clone https://github.com/Kushal0789/Skilled-swap-marketplace.git
+cd Skilled-swap-marketplace
+2. Move the Project to XAMPP
+
+Move the project folder into:
+
+C:\xampp\htdocs\
+
+The final path should look like:
+
+C:\xampp\htdocs\Skilled-swap-marketplace\
+3. Start XAMPP
+
+Open the XAMPP Control Panel and start:
+
+Apache
+MySQL
+4. Open phpMyAdmin
+
+Open:
+
+http://localhost/phpmyadmin
+
+Create the required database and import the SQL database file from the project's database directory.
+
+5. Configure the Database
+
+Update the database configuration according to your local environment.
+
+Typical XAMPP configuration:
+
+Host: localhost
+Username: root
+Password:
+Database: Your_Database_Name
+6. Run the Project
+
+Open:
+
+http://localhost/Skilled-swap-marketplace/
+🖥️ Screenshots
+🏠 Home Page
+<img src="https://github.com/user-attachments/assets/4fae9936-c152-4327-bacf-134129c7dc66" alt="Skilled Swap Marketplace Home Page">
+🔐 Login Page
+<img src="https://github.com/user-attachments/assets/d86f8377-e874-475d-9844-079c907b055b" alt="Skilled Swap Marketplace Login Page">
+📊 Dashboard
+<img src="https://github.com/user-attachments/assets/b83fe93f-61ab-4fe6-9394-37ca37c02e5b" alt="Skilled Swap Marketplace Dashboard">
+🔎 Discover Page
+<img src="https://github.com/user-attachments/assets/7afb55d8-fd26-4d5d-9c3e-f6b2c9dabdf3" alt="Skilled Swap Marketplace Discover Page">
+📚 Documentation
+
+Additional project documentation is available in:
+
+DOCUMENTATION.md
+
+🔮 Future Improvements
+
+Possible future improvements include:
+
+⭐ User ratings and reviews
+🔎 Advanced skill search and filtering
+📅 Session scheduling
+📱 Improved mobile responsiveness
+🔔 Enhanced notification system
+🏆 Achievement system
+📊 User and platform analytics
+💼 User portfolios
+🛡️ Advanced role-based access control
+🌐 Production deployment
+⚡ API and database optimization
+🤝 Contributing
+
+Contributions and suggestions are welcome.
+
+Contribution Workflow
+
+Fork → Create Branch → Make Changes → Test → Commit → Push → Pull Request
+
+Example:
+
+git checkout -b feature/new-feature
+git add .
+git commit -m "Add new feature"
+git push origin feature/new-feature
+
+Then create a Pull Request on GitHub.
+
+👨‍💻 Author
+<div align="center">
+Kushal Bhusal
+<a href="https://github.com/Kushal0789"> <img src="https://img.shields.io/badge/GitHub-Kushal0789-181717?style=for-the-badge&logo=github" alt="GitHub"> </a>
+
+<br><br>
+
+Built as a full-stack web application project focused on peer-to-peer skill exchange.
+
+</div>
+📄 License
+
+This project currently does not include a separate open-source license.
+
+If the project is intended to be distributed as open-source software, an appropriate license such as the MIT License can be added.
+
+⭐ Support
+
+If you find this project useful or interesting, consider giving the repository a ⭐ on GitHub.
+
+<div align="center">
+🤝 Share What You Know. Learn What You Love. Grow Together.
+
+Built with PHP • MySQL • JavaScript • HTML • CSS
+
+</div>
