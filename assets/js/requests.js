@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
             actionControls = `
                 <div style="display: flex; gap: 0.5rem;">
                     <button class="btn btn-outline btn-sm btn-leave-review" data-user-id="${req.sender_id}" data-user-name="${escapeHtml(req.sender_name)}">Leave Review</button>
-                    <a href="messages.php" class="btn btn-primary btn-sm">Chat Now</a>
                 </div>
             `;
         }
@@ -143,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
             actionControls = `
                 <div style="display: flex; gap: 0.5rem;">
                     <button class="btn btn-outline btn-sm btn-leave-review" data-user-id="${req.receiver_id}" data-user-name="${escapeHtml(req.receiver_name)}">Leave Review</button>
-                    <a href="messages.php" class="btn btn-primary btn-sm">Chat</a>
                 </div>
             `;
         }

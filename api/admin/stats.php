@@ -21,7 +21,6 @@ try {
     $totalSwaps = (int)$pdo->query("SELECT COUNT(*) FROM swap_requests")->fetchColumn();
     $acceptedSwaps = (int)$pdo->query("SELECT COUNT(*) FROM swap_requests WHERE status = 'accepted'")->fetchColumn();
     $pendingReports = (int)$pdo->query("SELECT COUNT(*) FROM reports WHERE status = 'pending'")->fetchColumn();
-    $totalMessages = (int)$pdo->query("SELECT COUNT(*) FROM messages")->fetchColumn();
 
     json_response(true, 'Admin stats loaded.', [
         'total_users'     => $totalUsers,
@@ -29,8 +28,7 @@ try {
         'total_skills'    => $totalSkills,
         'total_swaps'     => $totalSwaps,
         'accepted_swaps'  => $acceptedSwaps,
-        'pending_reports' => $pendingReports,
-        'total_messages'  => $totalMessages
+        'pending_reports' => $pendingReports
     ]);
 
 } catch (Exception $e) {

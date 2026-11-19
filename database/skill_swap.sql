@@ -185,8 +185,9 @@ DROP TABLE IF EXISTS `reports`;
 CREATE TABLE `reports` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `reporter_id` INT UNSIGNED NOT NULL,
-  `reported_user_id` INT UNSIGNED NOT NULL,
+  `reported_user_id` INT UNSIGNED DEFAULT NULL,
   `report_type` VARCHAR(50) NOT NULL,
+  `title` VARCHAR(150) DEFAULT NULL,
   `reason` TEXT NOT NULL,
   `status` ENUM('pending', 'resolved', 'dismissed') NOT NULL DEFAULT 'pending',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -195,7 +196,7 @@ CREATE TABLE `reports` (
   KEY `idx_rep_reported` (`reported_user_id`),
   KEY `idx_rep_status` (`status`),
   CONSTRAINT `fk_rep_reporter` FOREIGN KEY (`reporter_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_rep_reported` FOREIGN KEY (`reported_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_rep_reported` FOREIGN KEY (`reported_user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Re-enable foreign key checks

@@ -17,12 +17,10 @@ $isLoggedIn = is_logged_in();
 $csrfToken = generate_csrf_token();
 
 $unreadNotifs = 0;
-$unreadMsgs = 0;
 
 if ($isLoggedIn && $currentUser) {
     $pdo = get_db();
     $unreadNotifs = get_unread_notifications_count($pdo, $currentUser['id']);
-    $unreadMsgs = get_unread_messages_count($pdo, $currentUser['id']);
 }
 
 $pageTitle = $pageTitle ?? 'Skill Swap Marketplace - Learn. Share. Connect.';
@@ -46,6 +44,9 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <!-- Messaging System Styles (loaded on all pages for unread badge) -->
+    <link rel="stylesheet" href="assets/css/messages.css">
+    <link rel="stylesheet" href="assets/css/messages-responsive.css">
 </head>
 <body>
     <!-- Top Navigation Bar -->
@@ -67,7 +68,7 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
             <!-- Desktop Navigation Links -->
             <nav class="nav-links" id="desktop-nav">
                 <?php if ($isLoggedIn && is_admin()): ?>
-                    <?php /* Admin: no top nav — use the inner Admin Console navigation */ ?>
+                    <?php /* Admin: no top nav -- use the inner Admin Console navigation */ ?>
                 <?php elseif ($isLoggedIn): ?>
                     <a href="index.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'index.php') ? 'active' : '' ?>">Home</a>
                     <a href="discover.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'discover.php') ? 'active' : '' ?>">Discover Skills</a>
@@ -79,11 +80,25 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
                     <a href="requests.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'requests.php') ? 'active' : '' ?>">
                         Requests
                     </a>
-                    <a href="messages.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'messages.php') ? 'active' : '' ?>">
+                    <a href="messages.php" class="nav-link <?= (basename($_SERVER['PHP_SELF']) === 'messages.php') ? 'active' : '' ?>" style="position:relative;">
                         Messages
-                        <?php if ($unreadMsgs > 0): ?>
-                            <span class="badge-pill bg-primary" id="unread-msg-badge"><?= $unreadMsgs ?></span>
-                        <?php endif; ?>
+                        <?php
+                        try {
+                            $pdo = get_db();
+                            $unreadMsgStmt = $pdo->prepare("
+                                SELECT COUNT(*) FROM messages m
+                                JOIN conversations c ON c.id = m.conversation_id
+                                WHERE (c.user_one = :uid1 OR c.user_two = :uid2)
+                                  AND m.sender_id != :uid3
+                                  AND m.is_read = 0
+                            ");
+                            $unreadMsgStmt->execute([':uid1' => $currentUser['id'], ':uid2' => $currentUser['id'], ':uid3' => $currentUser['id']]);
+                            $unreadMsgCount = (int)$unreadMsgStmt->fetchColumn();
+                            if ($unreadMsgCount > 0): ?>
+                                <span class="notif-count-badge" style="font-size:0.65rem;min-width:17px;height:17px;"><?= $unreadMsgCount ?></span>
+                        <?php endif;
+                        } catch (Exception $e) { /* silent */ }
+                        ?>
                     </a>
                 <?php else: ?>
                     <a href="index.php#how-it-works" class="nav-link">How It Works</a>
@@ -150,9 +165,11 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
                             <?php if (is_admin()): ?>
                                 <a href="admin.php" class="dropdown-item">Admin Console</a>
                                 <a href="settings.php" class="dropdown-item">Settings</a>
+                                <a href="report.php" class="dropdown-item">Report &amp; Feedback</a>
                             <?php else: ?>
                                 <a href="profile.php" class="dropdown-item">My Profile &amp; Skills</a>
                                 <a href="settings.php" class="dropdown-item">Settings</a>
+                                <a href="report.php" class="dropdown-item">Report &amp; Feedback</a>
                             <?php endif; ?>
                             <div class="dropdown-divider"></div>
                             <a href="logout.php" class="dropdown-item text-danger">Sign Out</a>
@@ -178,6 +195,7 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
                 <?php if ($isLoggedIn && is_admin()): ?>
                     <a href="admin.php" class="mobile-nav-link">Admin Console</a>
                     <a href="settings.php" class="mobile-nav-link">Settings</a>
+                    <a href="report.php" class="mobile-nav-link">Report &amp; Feedback</a>
                     <a href="logout.php" class="mobile-nav-link text-danger">Sign Out</a>
                 <?php elseif ($isLoggedIn): ?>
                     <a href="index.php" class="mobile-nav-link">Home</a>
@@ -185,9 +203,10 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
                     <a href="dashboard.php" class="mobile-nav-link">Dashboard</a>
                     <a href="matches.php" class="mobile-nav-link">Matches</a>
                     <a href="requests.php" class="mobile-nav-link">Requests</a>
-                    <a href="messages.php" class="mobile-nav-link">Messages (<?= $unreadMsgs ?>)</a>
+                    <a href="messages.php" class="mobile-nav-link">Messages</a>
                     <a href="profile.php" class="mobile-nav-link">Profile &amp; Skills</a>
                     <a href="settings.php" class="mobile-nav-link">Settings</a>
+                    <a href="report.php" class="mobile-nav-link">Report &amp; Feedback</a>
                     <a href="logout.php" class="mobile-nav-link text-danger">Sign Out</a>
                 <?php else: ?>
                     <a href="login.php" class="mobile-nav-link">Sign In</a>

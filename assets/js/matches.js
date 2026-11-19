@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const actionBtn = match.swap_status
             ? (match.swap_status.status === 'accepted'
-                ? `<a href="messages.php" class="btn btn-primary btn-sm">Open Chat</a>`
+                ? `<a href="requests.php" class="btn btn-primary btn-sm">View Swap</a>`
                 : `<button class="btn btn-secondary btn-sm" disabled>Request Sent</button>`)
             : `<button class="btn btn-primary btn-sm btn-quick-swap" data-match='${JSON.stringify(match).replace(/'/g, "&apos;")}'>Send Swap Proposal</button>`;
 
@@ -180,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>${statusBadge}</div>
                     <div style="display: flex; gap: 0.5rem;">
                         <a href="profile.php?id=${match.id}" class="btn btn-ghost btn-sm">Profile</a>
+                        <a href="messages.php?with=${match.id}" class="btn btn-secondary btn-sm">Message</a>
                         ${actionBtn}
                     </div>
                 </div>
@@ -211,6 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
                     <a href="profile.php?id=${match.id}" class="btn btn-ghost btn-sm">View Profile</a>
+                    <a href="messages.php?with=${match.id}" class="btn btn-secondary btn-sm">Message</a>
                     <button class="btn btn-secondary btn-sm btn-quick-swap" data-match='${JSON.stringify(match).replace(/'/g, "&apos;")}'>Propose Swap</button>
                 </div>
             </div>

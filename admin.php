@@ -3,7 +3,8 @@
  * Administrator Console (Presentation Layer)
  * Skill Swap Marketplace
  *
- * Sections (via ?section=): dashboard | users | skills | swaps | reports
+ * Modernized UI/UX with Executive Dashboard, Live Telemetry,
+ * Real-time Filters, and Streamlined Moderation.
  */
 
 define('APP_INIT', true);
@@ -19,32 +20,41 @@ $activeSection = isset($_GET['section']) && in_array($_GET['section'], $allowedS
     : 'dashboard';
 
 $sectionMeta = [
-    'dashboard' => ['icon' => '📊', 'title' => 'Dashboard',         'desc' => 'Platform overview and recent activity'],
-    'users'     => ['icon' => '👥', 'title' => 'User Accounts',     'desc' => 'Manage and moderate registered members'],
-    'skills'    => ['icon' => '🎯', 'title' => 'Skills Catalog',    'desc' => 'Browse and manage the master skill taxonomy'],
-    'swaps'     => ['icon' => '🔄', 'title' => 'Swap Requests',     'desc' => 'Monitor all peer-to-peer skill exchanges'],
-    'reports'   => ['icon' => '🛡️', 'title' => 'Community Reports', 'desc' => 'Review flagged users and content'],
+    'dashboard' => ['icon' => '📊', 'title' => 'Dashboard Overview',  'desc' => 'Platform metrics, health telemetry, and recent events', 'breadcrumb' => 'Console / Overview'],
+    'users'     => ['icon' => '👥', 'title' => 'User Management',     'desc' => 'Audit, moderate, and manage registered marketplace accounts', 'breadcrumb' => 'Console / Users'],
+    'skills'    => ['icon' => '🎯', 'title' => 'Skills Taxonomy',     'desc' => 'Curate and organize the master skill exchange catalog', 'breadcrumb' => 'Console / Skills'],
+    'swaps'     => ['icon' => '🔄', 'title' => 'Swap Requests Hub',   'desc' => 'Monitor reciprocal and one-way peer exchanges in real time', 'breadcrumb' => 'Console / Swaps'],
+    'reports'   => ['icon' => '🛡️', 'title' => 'Moderation & Reports', 'desc' => 'Review flagged members and enforce community safety guidelines', 'breadcrumb' => 'Console / Moderation'],
 ];
 $currentMeta = $sectionMeta[$activeSection] ?? $sectionMeta['dashboard'];
 
-$pageTitle = 'Admin Console · SkillSwap';
+$pageTitle = 'Admin Console · SkillSwap Marketplace';
 $pageScript = 'admin.js';
 include __DIR__ . '/includes/header.php';
 ?>
 
+<!-- Dedicated Admin Stylesheet -->
+<link rel="stylesheet" href="assets/css/admin.css?v=<?= filemtime(__DIR__ . '/assets/css/admin.css') ?>">
+
 <div class="ac-layout">
 
     <!-- ===================== SIDEBAR ===================== -->
-    <aside class="ac-sidebar">
+    <aside class="ac-sidebar" id="admin-sidebar">
         <div class="ac-sidebar-brand">
-            <span class="ac-brand-icon">⚙️</span>
+            <div class="ac-brand-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </div>
             <div>
-                <div class="ac-brand-title">Control Center</div>
-                <div class="ac-brand-sub">Administrator Panel</div>
+                <div class="ac-brand-title">Admin Console</div>
+                <div class="ac-brand-sub">Platform Control</div>
             </div>
         </div>
 
-        <nav class="ac-sidenav">
+        <div class="ac-sidebar-section-title">Navigation</div>
+        <nav class="ac-sidenav" id="admin-sidebar-nav">
             <a href="admin.php?section=dashboard" class="ac-nav-item <?= $activeSection === 'dashboard' ? 'active' : '' ?>" data-tab="dashboard">
                 <span class="ac-nav-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -62,6 +72,7 @@ include __DIR__ . '/includes/header.php';
                     </svg>
                 </span>
                 <span>Users</span>
+                <span class="ac-nav-badge ac-nav-badge--neutral" id="sidebar-users-badge">—</span>
             </a>
             <a href="admin.php?section=skills" class="ac-nav-item <?= $activeSection === 'skills' ? 'active' : '' ?>" data-tab="skills">
                 <span class="ac-nav-icon">
@@ -70,6 +81,7 @@ include __DIR__ . '/includes/header.php';
                     </svg>
                 </span>
                 <span>Skills</span>
+                <span class="ac-nav-badge ac-nav-badge--neutral" id="sidebar-skills-badge">—</span>
             </a>
             <a href="admin.php?section=swaps" class="ac-nav-item <?= $activeSection === 'swaps' ? 'active' : '' ?>" data-tab="swaps">
                 <span class="ac-nav-icon">
@@ -79,6 +91,7 @@ include __DIR__ . '/includes/header.php';
                     </svg>
                 </span>
                 <span>Swaps</span>
+                <span class="ac-nav-badge ac-nav-badge--neutral" id="sidebar-swaps-badge">—</span>
             </a>
             <a href="admin.php?section=reports" class="ac-nav-item <?= $activeSection === 'reports' ? 'active' : '' ?>" data-tab="reports">
                 <span class="ac-nav-icon">
@@ -88,651 +101,372 @@ include __DIR__ . '/includes/header.php';
                     </svg>
                 </span>
                 <span>Reports</span>
-                <span class="ac-nav-badge hidden" id="sidebar-reports-badge">0</span>
+                <span class="ac-nav-badge ac-nav-badge--danger hidden" id="sidebar-reports-badge">0</span>
             </a>
         </nav>
 
+        <div class="ac-sidebar-footer">
+            <a href="index.php" class="ac-sidebar-link" title="Exit to marketplace">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                <span>View Marketplace</span>
+            </a>
+            <a href="settings.php" class="ac-sidebar-link" title="Admin account settings">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <span>Settings</span>
+            </a>
+            <a href="logout.php" class="ac-sidebar-link ac-sidebar-link--danger" title="Sign out">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Sign Out</span>
+            </a>
+        </div>
     </aside>
 
     <!-- ===================== MAIN CONTENT ===================== -->
     <main class="ac-main">
 
-        <!-- Page Banner -->
-        <div class="ac-banner" id="ac-page-banner">
-            <div class="ac-banner-content">
-                <div class="ac-banner-icon" id="ac-banner-icon"><?= $currentMeta['icon'] ?></div>
-                <div>
-                    <h1 class="ac-banner-title" id="ac-banner-title"><?= htmlspecialchars($currentMeta['title']) ?></h1>
-                    <p class="ac-banner-desc" id="ac-banner-desc"><?= htmlspecialchars($currentMeta['desc']) ?></p>
+        <!-- Executive Command Header -->
+        <header class="ac-command-header" id="ac-command-header">
+            <div class="ac-command-left">
+                <div class="ac-command-icon-box" id="ac-banner-icon"><?= $currentMeta['icon'] ?></div>
+                <div class="ac-command-titles">
+                    <span class="ac-command-breadcrumb" id="ac-banner-breadcrumb"><?= htmlspecialchars($currentMeta['breadcrumb']) ?></span>
+                    <h1 class="ac-command-title" id="ac-banner-title"><?= htmlspecialchars($currentMeta['title']) ?></h1>
+                    <p class="ac-command-desc" id="ac-banner-desc"><?= htmlspecialchars($currentMeta['desc']) ?></p>
                 </div>
             </div>
-            <div class="ac-banner-meta">
-                <span class="ac-status-dot"></span>
-                <span style="font-size:0.8rem;color:rgba(255,255,255,0.7);">System Online</span>
+            <div class="ac-command-actions">
+                <span class="ac-live-pill">
+                    <span class="ac-live-dot"></span>
+                    <span>System Active</span>
+                </span>
+                <button type="button" class="btn-ac-refresh" id="btn-admin-refresh" title="Reload live data">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    <span>Refresh</span>
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-quick-add-skill-top" title="Quickly add a skill to catalog">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span>New Skill</span>
+                </button>
             </div>
-        </div>
+        </header>
 
-        <!-- =========== DASHBOARD =========== -->
-        <div class="ac-pane <?= $activeSection !== 'dashboard' ? 'hidden' : '' ?>" id="admin-tab-dashboard">
+        <!-- ========================================================
+             1. DASHBOARD TAB
+             ======================================================== -->
+        <section class="ac-pane <?= $activeSection !== 'dashboard' ? 'hidden' : '' ?>" id="admin-tab-dashboard">
 
-            <!-- Stat Cards -->
+            <!-- Interactive Metric Cards -->
             <div class="ac-stats-grid" id="admin-stats-grid">
-                <div class="ac-stat-card ac-stat--blue">
+                <div class="ac-stat-card ac-stat--blue" data-jump-tab="users" title="Click to inspect users">
                     <div class="ac-stat-top">
                         <span class="ac-stat-label">Total Users</span>
-                        <span class="ac-stat-ico">👥</span>
+                        <div class="ac-stat-icon-wrap">👥</div>
                     </div>
                     <div class="ac-stat-val" id="stat-total-users">—</div>
-                    <div class="ac-stat-sub">Registered accounts</div>
+                    <div class="ac-stat-sub-row">
+                        <span>Registered accounts</span>
+                        <span class="ac-stat-hint-pill">Manage &rarr;</span>
+                    </div>
                 </div>
-                <div class="ac-stat-card ac-stat--green">
+
+                <div class="ac-stat-card ac-stat--green" data-jump-tab="users" title="Click to view active users">
                     <div class="ac-stat-top">
                         <span class="ac-stat-label">Active Users</span>
-                        <span class="ac-stat-ico">✅</span>
+                        <div class="ac-stat-icon-wrap">✅</div>
                     </div>
                     <div class="ac-stat-val" id="stat-active-users">—</div>
-                    <div class="ac-stat-sub">In good standing</div>
+                    <div class="ac-stat-sub-row">
+                        <span>In good standing</span>
+                        <span class="ac-stat-hint-pill">Audit &rarr;</span>
+                    </div>
                 </div>
-                <div class="ac-stat-card ac-stat--purple">
+
+                <div class="ac-stat-card ac-stat--purple" data-jump-tab="skills" title="Click to view skills taxonomy">
                     <div class="ac-stat-top">
                         <span class="ac-stat-label">Skills Catalog</span>
-                        <span class="ac-stat-ico">🎯</span>
+                        <div class="ac-stat-icon-wrap">🎯</div>
                     </div>
                     <div class="ac-stat-val" id="stat-total-skills">—</div>
-                    <div class="ac-stat-sub">Master taxonomy</div>
+                    <div class="ac-stat-sub-row">
+                        <span>Master taxonomy</span>
+                        <span class="ac-stat-hint-pill">Explore &rarr;</span>
+                    </div>
                 </div>
-                <div class="ac-stat-card ac-stat--teal">
+
+                <div class="ac-stat-card ac-stat--teal" data-jump-tab="swaps" title="Click to view all swaps">
                     <div class="ac-stat-top">
                         <span class="ac-stat-label">Total Swaps</span>
-                        <span class="ac-stat-ico">🔄</span>
+                        <div class="ac-stat-icon-wrap">🔄</div>
                     </div>
                     <div class="ac-stat-val" id="stat-total-swaps">—</div>
-                    <div class="ac-stat-sub">All requests</div>
+                    <div class="ac-stat-sub-row">
+                        <span>All exchange proposals</span>
+                        <span class="ac-stat-hint-pill">Review &rarr;</span>
+                    </div>
                 </div>
-                <div class="ac-stat-card ac-stat--amber">
+
+                <div class="ac-stat-card ac-stat--amber" data-jump-tab="swaps" title="Click to view accepted swaps">
                     <div class="ac-stat-top">
                         <span class="ac-stat-label">Accepted Swaps</span>
-                        <span class="ac-stat-ico">🤝</span>
+                        <div class="ac-stat-icon-wrap">🤝</div>
                     </div>
                     <div class="ac-stat-val" id="stat-accepted-swaps">—</div>
-                    <div class="ac-stat-sub">Connected pairs</div>
+                    <div class="ac-stat-sub-row">
+                        <span>Successful pairings</span>
+                        <span class="ac-stat-hint-pill">Inspect &rarr;</span>
+                    </div>
                 </div>
-                <div class="ac-stat-card ac-stat--red">
+
+                <div class="ac-stat-card ac-stat--red" data-jump-tab="reports" title="Click to resolve pending reports">
                     <div class="ac-stat-top">
                         <span class="ac-stat-label">Pending Reports</span>
-                        <span class="ac-stat-ico">🚨</span>
+                        <div class="ac-stat-icon-wrap">🚨</div>
                     </div>
                     <div class="ac-stat-val" id="stat-pending-reports">—</div>
-                    <div class="ac-stat-sub">Awaiting review</div>
+                    <div class="ac-stat-sub-row">
+                        <span style="color:var(--danger);font-weight:700;">Requires attention</span>
+                        <span class="ac-stat-hint-pill" style="color:var(--danger);">Resolve &rarr;</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="ac-card" style="margin-top:1.75rem;">
+            <!-- Recent Activity Timeline -->
+            <div class="ac-card">
                 <div class="ac-card-header">
-                    <div>
-                        <h3 class="ac-card-title">Recent Activity</h3>
-                        <p class="ac-card-sub">Latest platform events</p>
+                    <div class="ac-card-header-titles">
+                        <h3 class="ac-card-title">Real-Time Event Stream</h3>
+                        <p class="ac-card-sub">Chronological audit log of user signups, swap interactions, and taxonomy updates</p>
+                    </div>
+                    <div class="ac-filter-group" id="activity-filter-group">
+                        <button type="button" class="ac-pill-btn active" data-filter="all">All Events</button>
+                        <button type="button" class="ac-pill-btn" data-filter="user_registered">Registrations</button>
+                        <button type="button" class="ac-pill-btn" data-filter="swap_request">Swaps</button>
+                        <button type="button" class="ac-pill-btn" data-filter="skill_added">Skills</button>
                     </div>
                 </div>
-                <div id="admin-activity-list">
+
+                <div class="ac-activity-container" id="admin-activity-list">
                     <div class="ac-loading"><span class="spinner spinner-primary"></span></div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- =========== USERS =========== -->
-        <div class="ac-pane <?= $activeSection !== 'users' ? 'hidden' : '' ?>" id="admin-tab-users">
-            <div class="ac-card" style="overflow-x:auto;">
+        <!-- ========================================================
+             2. USERS MANAGEMENT TAB
+             ======================================================== -->
+        <section class="ac-pane <?= $activeSection !== 'users' ? 'hidden' : '' ?>" id="admin-tab-users">
+            <div class="ac-card">
                 <div class="ac-card-header">
-                    <div>
-                        <h3 class="ac-card-title">User Accounts</h3>
-                        <p class="ac-card-sub">Manage registered members</p>
+                    <div class="ac-card-header-titles">
+                        <h3 class="ac-card-title">Registered Accounts</h3>
+                        <p class="ac-card-sub">Audit user activity, manage roles, and enforce moderation</p>
                     </div>
-                    <div class="ac-search-wrap">
-                        <svg class="ac-search-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" id="user-search-input" class="ac-search-input" placeholder="Search users…">
+
+                    <div class="ac-card-toolbar">
+                        <!-- Search Box -->
+                        <div class="ac-search-box">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="user-search-input" class="ac-search-input" placeholder="Search by name, @username, email…">
+                            <button type="button" class="ac-search-clear" id="user-search-clear" title="Clear search">&times;</button>
+                        </div>
+
+                        <!-- Role & Status Filter Pills -->
+                        <div class="ac-filter-group" id="user-filter-group">
+                            <button type="button" class="ac-pill-btn active" data-filter="all">All <span class="ac-pill-count" id="count-users-all">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-filter="active">Active <span class="ac-pill-count" id="count-users-active">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-filter="suspended">Suspended <span class="ac-pill-count" id="count-users-suspended">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-filter="admin">Admins <span class="ac-pill-count" id="count-users-admin">0</span></button>
+                        </div>
                     </div>
                 </div>
-                <table class="ac-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>User</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Joined</th>
-                            <th>Skills</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-users-table-body">
-                        <tr><td colspan="8"><div class="ac-loading"><span class="spinner spinner-primary"></span></div></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <!-- =========== SKILLS =========== -->
-        <div class="ac-pane <?= $activeSection !== 'skills' ? 'hidden' : '' ?>" id="admin-tab-skills">
-            <div class="ac-card" style="overflow-x:auto;">
+                <div class="ac-table-status-bar">
+                    <span id="users-result-counter">Loading accounts…</span>
+                    <span style="font-size:0.75rem;">Showing live user accounts</span>
+                </div>
+
+                <div class="ac-table-container">
+                    <table class="ac-table">
+                        <thead>
+                            <tr>
+                                <th style="width:60px;">ID</th>
+                                <th>User Profile</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Member Since</th>
+                                <th>Skill Portfolios</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-table-body">
+                            <tr><td colspan="8"><div class="ac-loading"><span class="spinner spinner-primary"></span></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             3. SKILLS TAXONOMY TAB
+             ======================================================== -->
+        <section class="ac-pane <?= $activeSection !== 'skills' ? 'hidden' : '' ?>" id="admin-tab-skills">
+            <div class="ac-card">
                 <div class="ac-card-header">
-                    <div>
-                        <h3 class="ac-card-title">Skills Catalog</h3>
-                        <p class="ac-card-sub">Categorized skill taxonomy</p>
+                    <div class="ac-card-header-titles">
+                        <h3 class="ac-card-title">Skills Catalog & Taxonomy</h3>
+                        <p class="ac-card-sub">Browse, categorize, and expand the master discipline taxonomy</p>
                     </div>
-                    <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
-                        <div class="ac-search-wrap">
-                            <svg class="ac-search-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                            <input type="text" id="skill-search-input" class="ac-search-input" placeholder="Search skills…">
+
+                    <div class="ac-card-toolbar">
+                        <!-- Search Box -->
+                        <div class="ac-search-box">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="skill-search-input" class="ac-search-input" placeholder="Search skills or categories…">
+                            <button type="button" class="ac-search-clear" id="skill-search-clear" title="Clear search">&times;</button>
                         </div>
+
+                        <!-- Add Skill Button -->
                         <button type="button" class="btn btn-primary btn-sm" id="btn-admin-add-skill">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                            Add Skill
+                            <span>Add New Skill</span>
                         </button>
                     </div>
                 </div>
-                <table class="ac-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Skill Name</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Usage</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-skills-table-body">
-                        <tr><td colspan="6"><div class="ac-loading"><span class="spinner spinner-primary"></span></div></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <!-- =========== SWAPS =========== -->
-        <div class="ac-pane <?= $activeSection !== 'swaps' ? 'hidden' : '' ?>" id="admin-tab-swaps">
-            <div class="ac-card" style="overflow-x:auto;">
-                <div class="ac-card-header">
-                    <div>
-                        <h3 class="ac-card-title">Swap Requests</h3>
-                        <p class="ac-card-sub">Monitor all skill exchange requests</p>
-                    </div>
-                    <div class="ac-filter-pills" id="swap-filter-pills">
-                        <button type="button" class="swap-filter-btn active" data-status="all">All</button>
-                        <button type="button" class="swap-filter-btn" data-status="pending">Pending</button>
-                        <button type="button" class="swap-filter-btn" data-status="accepted">Accepted</button>
-                        <button type="button" class="swap-filter-btn" data-status="rejected">Rejected</button>
-                        <button type="button" class="swap-filter-btn" data-status="cancelled">Cancelled</button>
+                <!-- Category Filter Pills Bar -->
+                <div style="padding: 0.85rem 1.75rem; border-bottom: 1px solid var(--border-color); background: var(--bg-surface-elevated); display: flex; align-items: center; gap: 0.5rem; overflow-x: auto;">
+                    <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-right:0.25rem;">Category:</span>
+                    <div class="ac-filter-group" id="skill-category-filter-group">
+                        <button type="button" class="ac-pill-btn active" data-category="all">All</button>
+                        <button type="button" class="ac-pill-btn" data-category="Programming">Programming</button>
+                        <button type="button" class="ac-pill-btn" data-category="Design">Design</button>
+                        <button type="button" class="ac-pill-btn" data-category="Creative">Creative</button>
+                        <button type="button" class="ac-pill-btn" data-category="Education">Education</button>
+                        <button type="button" class="ac-pill-btn" data-category="Business">Business</button>
                     </div>
                 </div>
-                <table class="ac-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Requester</th>
-                            <th>Receiver</th>
-                            <th>Offered Skill</th>
-                            <th>Requested Skill</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-swaps-table-body">
-                        <tr><td colspan="7"><div class="ac-loading"><span class="spinner spinner-primary"></span></div></td></tr>
-                    </tbody>
-                </table>
-                <div id="admin-swaps-empty" class="empty-state hidden">
-                    <div class="empty-state-icon">🔄</div>
-                    <h3 class="empty-state-title">No swaps found</h3>
-                    <p class="empty-state-desc">No swap requests match the selected filter.</p>
+
+                <div class="ac-table-status-bar">
+                    <span id="skills-result-counter">Loading catalog…</span>
+                    <span style="font-size:0.75rem;">Master Taxonomy Catalog</span>
+                </div>
+
+                <div class="ac-table-container">
+                    <table class="ac-table">
+                        <thead>
+                            <tr>
+                                <th style="width:60px;">ID</th>
+                                <th>Skill Name</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Market Demand</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-skills-table-body">
+                            <tr><td colspan="6"><div class="ac-loading"><span class="spinner spinner-primary"></span></div></td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- =========== REPORTS =========== -->
-        <div class="ac-pane <?= $activeSection !== 'reports' ? 'hidden' : '' ?>" id="admin-tab-reports">
+        <!-- ========================================================
+             4. SWAPS MONITORING TAB
+             ======================================================== -->
+        <section class="ac-pane <?= $activeSection !== 'swaps' ? 'hidden' : '' ?>" id="admin-tab-swaps">
             <div class="ac-card">
                 <div class="ac-card-header">
-                    <div>
-                        <h3 class="ac-card-title">Community Reports</h3>
-                        <p class="ac-card-sub">Flagged users and content</p>
+                    <div class="ac-card-header-titles">
+                        <h3 class="ac-card-title">Skill Swap Requests</h3>
+                        <p class="ac-card-sub">Audit reciprocal peer interactions and inspect proposal dialogues</p>
                     </div>
-                    <div class="ac-filter-pills">
-                        <button type="button" class="report-filter-btn active" data-status="all">All</button>
-                        <button type="button" class="report-filter-btn" data-status="pending">Pending</button>
-                        <button type="button" class="report-filter-btn" data-status="resolved">Resolved</button>
-                        <button type="button" class="report-filter-btn" data-status="dismissed">Dismissed</button>
+
+                    <div class="ac-card-toolbar">
+                        <!-- Search Box for Swaps -->
+                        <div class="ac-search-box">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="swap-search-input" class="ac-search-input" placeholder="Search by peer name or skill…">
+                            <button type="button" class="ac-search-clear" id="swap-search-clear" title="Clear search">&times;</button>
+                        </div>
+
+                        <!-- Status Filter Pills -->
+                        <div class="ac-filter-group" id="swap-filter-pills">
+                            <button type="button" class="ac-pill-btn active" data-status="all">All <span class="ac-pill-count" id="count-swaps-all">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-status="pending">Pending <span class="ac-pill-count" id="count-swaps-pending">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-status="accepted">Accepted <span class="ac-pill-count" id="count-swaps-accepted">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-status="rejected">Rejected <span class="ac-pill-count" id="count-swaps-rejected">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-status="cancelled">Cancelled <span class="ac-pill-count" id="count-swaps-cancelled">0</span></button>
+                        </div>
                     </div>
                 </div>
-                <div id="admin-reports-list">
+
+                <div class="ac-table-status-bar">
+                    <span id="swaps-result-counter">Loading swaps…</span>
+                    <span style="font-size:0.75rem;">Click 'View Proposal' to inspect message details</span>
+                </div>
+
+                <div class="ac-table-container">
+                    <table class="ac-table">
+                        <thead>
+                            <tr>
+                                <th style="width:60px;">ID</th>
+                                <th>Requester</th>
+                                <th>Receiver</th>
+                                <th>Skill Reciprocity</th>
+                                <th>Status</th>
+                                <th>Timestamp</th>
+                                <th style="text-align:right;">Proposal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-swaps-table-body">
+                            <tr><td colspan="7"><div class="ac-loading"><span class="spinner spinner-primary"></span></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="admin-swaps-empty" class="empty-state hidden">
+                    <div class="empty-state-icon">🔄</div>
+                    <h3 class="empty-state-title">No swap requests found</h3>
+                    <p class="empty-state-desc">No skill exchanges match the specified search or filter criteria.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             5. MODERATION & REPORTS TAB
+             ======================================================== -->
+        <section class="ac-pane <?= $activeSection !== 'reports' ? 'hidden' : '' ?>" id="admin-tab-reports">
+            <div class="ac-card">
+                <div class="ac-card-header">
+                    <div class="ac-card-header-titles">
+                        <h3 class="ac-card-title">Community Moderation Queue</h3>
+                        <p class="ac-card-sub">Investigate reported accounts, review infractions, and enforce platform trust</p>
+                    </div>
+
+                    <div class="ac-card-toolbar">
+                        <div class="ac-filter-group" id="report-filter-group">
+                            <button type="button" class="ac-pill-btn active" data-status="all">All Reports <span class="ac-pill-count" id="count-reports-all">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-status="pending">Pending <span class="ac-pill-count" id="count-reports-pending">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-status="resolved">Resolved <span class="ac-pill-count" id="count-reports-resolved">0</span></button>
+                            <button type="button" class="ac-pill-btn" data-status="dismissed">Dismissed <span class="ac-pill-count" id="count-reports-dismissed">0</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ac-table-status-bar">
+                    <span id="reports-result-counter">Loading moderation queue…</span>
+                    <span style="font-size:0.75rem;">Direct action buttons allow suspending users on-the-spot</span>
+                </div>
+
+                <div class="ac-reports-container" id="admin-reports-list">
                     <div class="ac-loading"><span class="spinner spinner-primary"></span></div>
                 </div>
             </div>
-        </div>
+        </section>
 
-    </main><!-- /.ac-main -->
-</div><!-- /.ac-layout -->
-
-<style>
-/* ============================================================
-   Admin Console — Full UI (sidebar layout)
-   ============================================================ */
-
-/* Layout shell */
-.ac-layout {
-    display: flex;
-    min-height: calc(100vh - 70px);
-    max-width: 1440px;
-    margin: 0 auto;
-    gap: 0;
-}
-
-/* ── Sidebar ─────────────────────────────────── */
-.ac-sidebar {
-    width: 220px;
-    flex-shrink: 0;
-    background: var(--bg-surface);
-    border-right: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 0;
-    position: sticky;
-    top: 70px;
-    height: calc(100vh - 70px);
-    overflow-y: auto;
-}
-
-.ac-sidebar-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 1rem;
-}
-
-.ac-brand-icon { font-size: 1.6rem; }
-.ac-brand-title { font-weight: 800; font-size: 0.95rem; line-height: 1.2; }
-.ac-brand-sub { font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.03em; }
-
-.ac-sidenav {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 0 0.75rem;
-    flex: 1;
-}
-
-.ac-nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.65rem 0.85rem;
-    border: none;
-    border-radius: var(--radius-md);
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    text-align: left;
-    width: 100%;
-    position: relative;
-    text-decoration: none;
-    box-sizing: border-box;
-}
-
-.ac-nav-item:hover {
-    background: var(--bg-surface-elevated);
-    color: var(--text-primary);
-    text-decoration: none;
-}
-
-.ac-nav-item.active {
-    background: var(--primary-glow, rgba(99,102,241,0.12));
-    color: var(--primary);
-    text-decoration: none;
-}
-
-.ac-nav-item.active .ac-nav-icon svg { stroke: var(--primary); }
-
-.ac-nav-icon {
-    width: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    opacity: 0.75;
-}
-.ac-nav-item.active .ac-nav-icon { opacity: 1; }
-
-.ac-nav-badge {
-    margin-left: auto;
-    background: var(--danger);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 800;
-    padding: 1px 6px;
-    border-radius: 999px;
-    min-width: 18px;
-    text-align: center;
-}
-
-.ac-sidebar-footer {
-    padding: 1rem 1rem 0;
-    border-top: 1px solid var(--border-color);
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.ac-sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.55rem 0.75rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: all var(--transition-fast);
-}
-.ac-sidebar-link:hover { background: var(--bg-surface-elevated); color: var(--text-primary); }
-.ac-sidebar-link--danger { color: var(--danger); }
-.ac-sidebar-link--danger:hover { background: rgba(239,68,68,0.08); color: var(--danger); }
-
-/* ── Main area ───────────────────────────────── */
-.ac-main {
-    flex: 1;
-    min-width: 0;
-    padding: 2rem 2rem 3rem;
-    overflow-x: hidden;
-}
-
-/* Banner */
-.ac-banner {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary, #7c3aed) 100%);
-    border-radius: var(--radius-xl);
-    padding: 1.75rem 2rem;
-    margin-bottom: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    box-shadow: 0 8px 30px rgba(99,102,241,0.25);
-}
-
-.ac-banner-content { display: flex; align-items: center; gap: 1.25rem; }
-.ac-banner-icon { font-size: 2.5rem; line-height: 1; }
-.ac-banner-title { font-size: 1.6rem; font-weight: 800; color: #fff; margin: 0 0 0.2rem; line-height: 1.2; }
-.ac-banner-desc { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin: 0; }
-
-.ac-banner-meta { display: flex; align-items: center; gap: 0.5rem; }
-.ac-status-dot {
-    width: 8px; height: 8px;
-    background: #4ade80;
-    border-radius: 50%;
-    box-shadow: 0 0 0 3px rgba(74,222,128,0.3);
-    animation: pulse-green 2s infinite;
-}
-@keyframes pulse-green {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(74,222,128,0.3); }
-    50% { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); }
-}
-
-/* Tab pane visibility */
-.ac-pane { }
-.ac-pane.hidden { display: none !important; }
-
-/* ── Stat Cards ──────────────────────────────── */
-.ac-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
-    gap: 1.1rem;
-    margin-bottom: 0;
-}
-
-.ac-stat-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 1.4rem 1.25rem;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: default;
-}
-.ac-stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-.ac-stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-
-.ac-stat--blue::before  { background: linear-gradient(90deg, #6366f1, #818cf8); }
-.ac-stat--green::before { background: linear-gradient(90deg, #10b981, #34d399); }
-.ac-stat--purple::before{ background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
-.ac-stat--teal::before  { background: linear-gradient(90deg, #0891b2, #22d3ee); }
-.ac-stat--amber::before { background: linear-gradient(90deg, #d97706, #fbbf24); }
-.ac-stat--red::before   { background: linear-gradient(90deg, #dc2626, #f87171); }
-
-.ac-stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
-.ac-stat-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
-.ac-stat-ico { font-size: 1.25rem; opacity: 0.75; }
-
-.ac-stat-val {
-    font-size: 2.2rem;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 0.35rem;
-    color: var(--text-primary);
-    font-family: var(--font-heading, inherit);
-}
-.ac-stat-sub { font-size: 0.72rem; color: var(--text-muted); }
-
-/* ── Card ────────────────────────────────────── */
-.ac-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    padding: 0;
-    overflow: hidden;
-}
-
-.ac-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1.5rem 1.75rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.ac-card-title { font-size: 1.05rem; font-weight: 800; margin: 0 0 0.1rem; }
-.ac-card-sub { font-size: 0.78rem; color: var(--text-muted); margin: 0; }
-
-/* ── Table ───────────────────────────────────── */
-.ac-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.875rem;
-}
-
-.ac-table th {
-    padding: 0.75rem 1.25rem;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-muted);
-    font-weight: 700;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-    background: var(--bg-surface-elevated);
-    text-align: left;
-}
-
-.ac-table td {
-    padding: 0.9rem 1.25rem;
-    border-bottom: 1px solid var(--border-color);
-    vertical-align: middle;
-    color: var(--text-primary);
-}
-
-.ac-table tbody tr:last-child td { border-bottom: none; }
-.ac-table tbody tr { transition: background var(--transition-fast); }
-.ac-table tbody tr:hover td { background: var(--bg-surface-elevated); }
-
-/* ── Search ──────────────────────────────────── */
-.ac-search-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--bg-surface-elevated);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0 0.75rem;
-}
-.ac-search-ico { color: var(--text-muted); flex-shrink: 0; }
-.ac-search-input {
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 0.875rem;
-    color: var(--text-primary);
-    padding: 0.5rem 0;
-    min-width: 180px;
-}
-.ac-search-input::placeholder { color: var(--text-muted); }
-
-/* ── Filter Pills ────────────────────────────── */
-.ac-filter-pills { display: flex; gap: 0.35rem; flex-wrap: wrap; }
-
-.swap-filter-btn,
-.report-filter-btn {
-    background: var(--bg-surface-elevated);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 4px 13px;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-.swap-filter-btn:hover,
-.report-filter-btn:hover { border-color: var(--primary); color: var(--primary); }
-.swap-filter-btn.active,
-.report-filter-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
-
-/* ── Activity Feed ───────────────────────────── */
-#admin-activity-list { padding: 0 1.75rem 1.25rem; }
-
-.activity-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--border-color);
-}
-.activity-item:last-child { border-bottom: none; }
-
-.activity-icon {
-    flex-shrink: 0;
-    width: 2.4rem; height: 2.4rem;
-    background: var(--bg-surface-elevated);
-    border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
-}
-
-.activity-body { flex: 1; min-width: 0; }
-.activity-label { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.activity-detail { font-size: 0.88rem; color: var(--text-primary); margin: 0.15rem 0 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.activity-time { font-size: 0.73rem; color: var(--text-muted); }
-
-/* Loading spinner cell */
-.ac-loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2.5rem;
-}
-
-/* ── Reports cards ───────────────────────────── */
-#admin-reports-list { padding: 1.25rem 1.75rem; }
-
-.ac-report-card {
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem;
-    margin-bottom: 0.85rem;
-    background: var(--bg-surface-elevated);
-    transition: box-shadow 0.15s;
-}
-.ac-report-card:last-child { margin-bottom: 0; }
-.ac-report-card:hover { box-shadow: var(--shadow-sm); }
-
-.ac-report-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.85rem;
-}
-.ac-report-meta {
-    font-size: 0.85rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.7;
-}
-.ac-report-reason {
-    background: var(--bg-surface);
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.84rem;
-    color: var(--text-secondary);
-    border-left: 3px solid var(--border-color);
-    margin-bottom: 0.75rem;
-    font-style: italic;
-}
-.ac-report-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--border-color);
-}
-
-/* ── Responsive ──────────────────────────────── */
-@media (max-width: 900px) {
-    .ac-layout { flex-direction: column; }
-    .ac-sidebar {
-        width: 100%;
-        height: auto;
-        position: static;
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 0.75rem;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .ac-sidebar-brand { padding-bottom: 0; border-bottom: none; margin-bottom: 0; }
-    .ac-sidenav { flex-direction: row; flex-wrap: wrap; padding: 0; gap: 4px; }
-    .ac-sidebar-footer { flex-direction: row; border-top: none; padding: 0; margin-top: 0; }
-    .ac-nav-item { padding: 0.5rem 0.75rem; font-size: 0.8rem; }
-    .ac-main { padding: 1.25rem 1rem 2rem; }
-    .ac-table { font-size: 0.8rem; }
-    .ac-table th, .ac-table td { padding: 0.65rem 0.75rem; }
-}
-</style>
+    </main>
+</div>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

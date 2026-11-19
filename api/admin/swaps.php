@@ -33,9 +33,11 @@ try {
             sender.id        AS sender_id,
             sender.name      AS sender_name,
             sender.username  AS sender_username,
+            sender.profile_image AS sender_profile_image,
             receiver.id      AS receiver_id,
             receiver.name    AS receiver_name,
             receiver.username AS receiver_username,
+            receiver.profile_image AS receiver_profile_image,
             offered.name     AS offered_skill,
             requested.name   AS requested_skill
         FROM swap_requests sr
@@ -59,6 +61,8 @@ try {
 
     foreach ($swaps as &$s) {
         $s['time_ago'] = time_ago($s['created_at']);
+        $s['sender_avatar'] = get_avatar_url($s['sender_profile_image'] ?? 'default-avatar.svg');
+        $s['receiver_avatar'] = get_avatar_url($s['receiver_profile_image'] ?? 'default-avatar.svg');
     }
 
     json_response(true, 'Swaps loaded.', $swaps);

@@ -194,31 +194,14 @@ function get_unread_notifications_count(PDO $pdo, int $userId): int {
 }
 
 /**
- * Count unread incoming messages for a user across all their conversations.
+ * Count unread incoming messages for a user (Messaging feature disabled).
  *
  * @param PDO $pdo
  * @param int $userId
  * @return int
  */
 function get_unread_messages_count(PDO $pdo, int $userId): int {
-    try {
-        $stmt = $pdo->prepare("
-            SELECT COUNT(m.id)
-            FROM messages m
-            INNER JOIN conversations c ON m.conversation_id = c.id
-            WHERE (c.user_one = :uid1 OR c.user_two = :uid2)
-              AND m.sender_id != :uid3
-              AND m.is_read = 0
-        ");
-        $stmt->execute([
-            ':uid1' => $userId,
-            ':uid2' => $userId,
-            ':uid3' => $userId
-        ]);
-        return (int)$stmt->fetchColumn();
-    } catch (Exception $e) {
-        return 0;
-    }
+    return 0;
 }
 
 /**

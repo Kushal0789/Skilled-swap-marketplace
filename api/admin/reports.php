@@ -37,19 +37,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // GET: List reports
 try {
+    // Auto-migrate schema if needed
+    try {
+        $pdo->exec("ALTER TABLE reports MODIFY reported_user_id INT UNSIGNED NULL");
+    } catch (Throwable $e) {}
+    try {
+        $pdo->exec("ALTER TABLE reports ADD COLUMN title VARCHAR(150) NULL AFTER report_type");
+    } catch (Throwable $e) {}
+
     $stmt = $pdo->query("
-        SELECT rep.id, rep.report_type, rep.reason, rep.status, rep.created_at,
-               u_from.name AS reporter_name, u_from.username AS reporter_username,
-               u_to.name AS reported_name, u_to.username AS reported_username, u_to.id AS reported_user_id
+        SELECT rep.id, rep.report_type, rep.title, rep.reason, rep.status, rep.created_at,
+               u_from.name AS reporter_name, u_from.username AS reporter_username, u_from.profile_image AS reporter_profile_image,
+               u_to.name AS reported_name, u_to.username AS reported_username, u_to.id AS reported_user_id,
+               u_to.profile_image AS reported_profile_image, u_to.status AS reported_status
         FROM reports rep
         INNER JOIN users u_from ON rep.reporter_id = u_from.id
-        INNER JOIN users u_to ON rep.reported_user_id = u_to.id
+        LEFT JOIN users u_to ON rep.reported_user_id = u_to.id
         ORDER BY rep.created_at DESC
     ");
     $reports = $stmt->fetchAll();
 
     foreach ($reports as &$r) {
         $r['time_ago'] = time_ago($r['created_at']);
+        $r['reporter_avatar'] = get_avatar_url($r['reporter_profile_image'] ?? 'default-avatar.svg');
+        $r['reported_avatar'] = get_avatar_url($r['reported_profile_image'] ?? 'default-avatar.svg');
     }
 
     json_response(true, 'Reports loaded.', $reports);

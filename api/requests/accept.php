@@ -56,31 +56,6 @@ try {
 
     $senderId = (int)$req['sender_id'];
 
-    // Ensure conversation exists between these two users
-    $u1 = min($userId, $senderId);
-    $u2 = max($userId, $senderId);
-
-    $convStmt = $pdo->prepare("SELECT id FROM conversations WHERE user_one = :u1 AND user_two = :u2 LIMIT 1");
-    $convStmt->execute([':u1' => $u1, ':u2' => $u2]);
-    $conv = $convStmt->fetch();
-
-    if ($conv) {
-        $conversationId = (int)$conv['id'];
-    } else {
-        $insertConv = $pdo->prepare("INSERT INTO conversations (user_one, user_two, created_at) VALUES (:u1, :u2, NOW())");
-        $insertConv->execute([':u1' => $u1, ':u2' => $u2]);
-        $conversationId = (int)$pdo->lastInsertId();
-    }
-
-    // Post an automated greeting/notification message in the conversation thread
-    $autoMsg = "Hello! I accepted your skill swap request for {$req['offered_skill']} & {$req['requested_skill']}. Let's coordinate our first session!";
-    $msgStmt = $pdo->prepare("INSERT INTO messages (conversation_id, sender_id, message, is_read, created_at) VALUES (:cid, :sid, :msg, 0, NOW())");
-    $msgStmt->execute([
-        ':cid' => $conversationId,
-        ':sid' => $userId,
-        ':msg' => $autoMsg
-    ]);
-
     // Send notification to the sender
     create_notification(
         $pdo,
@@ -91,10 +66,9 @@ try {
         $requestId
     );
 
-    json_response(true, 'Swap request accepted! A new chat conversation has been started.', [
-        'request_id'      => $requestId,
-        'conversation_id' => $conversationId,
-        'status'          => 'accepted'
+    json_response(true, 'Swap request accepted!', [
+        'request_id' => $requestId,
+        'status'     => 'accepted'
     ]);
 
 } catch (Exception $e) {

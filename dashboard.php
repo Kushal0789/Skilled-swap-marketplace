@@ -40,9 +40,6 @@ $pendingReqCount = (int)$pdo->prepare("SELECT COUNT(*) FROM swap_requests WHERE 
 // Active swaps count
 $activeSwapsCount = (int)$pdo->query("SELECT COUNT(*) FROM swap_requests WHERE (sender_id = {$userId} OR receiver_id = {$userId}) AND status = 'accepted'")->fetchColumn();
 
-// Unread messages
-$unreadMsgs = get_unread_messages_count($pdo, $userId);
-
 // Calculate profile completion percentage
 $completion = 40; // Base: registered
 if (!empty($user['bio'])) $completion += 20;
@@ -127,7 +124,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div class="metric-card">
-            <div class="metric-icon-box" style="background: var(--primary-glow); color: var(--primary); box-shadow: 0 0 16px var(--primary-glow);">🎯</div>
+            <div class="metric-icon-box" style="background: var(--primary-bg); color: var(--primary); box-shadow: 0 0 16px var(--primary-glow);">🎯</div>
             <div class="metric-content">
                 <span class="metric-number"><?= count($myWanted) ?></span>
                 <span class="metric-label">Skills You Want</span>
@@ -145,12 +142,12 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div class="metric-card">
-            <div class="metric-icon-box" style="background: rgba(59, 130, 246, 0.16); color: #3b82f6; box-shadow: 0 0 16px var(--info-border);">🤝</div>
+            <div class="metric-icon-box" style="background: var(--info-bg); color: var(--info); box-shadow: 0 0 16px var(--info-border);">🤝</div>
             <div class="metric-content">
                 <span class="metric-number"><?= $activeSwapsCount ?></span>
                 <span class="metric-label">Active Swaps</span>
             </div>
-            <a href="messages.php" class="metric-corner-link">Chat</a>
+            <a href="requests.php" class="metric-corner-link">View</a>
         </div>
     </div>
 
@@ -488,6 +485,71 @@ include __DIR__ . '/includes/header.php';
     .dash-welcome-card { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
     .profile-meter-box { width: 100%; }
     .dash-two-column { grid-template-columns: 1fr; }
+}
+
+/* Light Theme Overrides for Dashboard */
+html[data-theme="light"] .dash-welcome-card {
+    background: #ffffff;
+    border-color: #e5e9f0;
+    box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 4px 12px -3px rgba(15, 23, 42, 0.03);
+}
+
+html[data-theme="light"] .profile-meter-box {
+    background: #f8fafc;
+    border-color: #e5e9f0;
+}
+
+html[data-theme="light"] .progress-bar-track {
+    background: #e2e8f0;
+    border-color: transparent;
+}
+
+html[data-theme="light"] .metric-card {
+    background: #ffffff;
+    border-color: #e5e9f0;
+    box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 3px 8px -2px rgba(15, 23, 42, 0.03);
+}
+
+html[data-theme="light"] .metric-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 6px 18px -3px rgba(99, 102, 241, 0.14);
+}
+
+html[data-theme="light"] .metric-corner-link {
+    background: #f1f5f9;
+    border-color: #e5e9f0;
+    color: var(--primary);
+}
+
+html[data-theme="light"] .metric-corner-link:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+html[data-theme="light"] .quick-actions-bar {
+    background: #ffffff;
+    border-color: #e5e9f0;
+    box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.03);
+}
+
+html[data-theme="light"] .quick-pill {
+    background: #f8fafc;
+    border-color: #e5e9f0;
+    color: #0f172a;
+}
+
+html[data-theme="light"] .quick-pill:hover {
+    background: #ffffff;
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+}
+
+html[data-theme="light"] .quick-pill.primary {
+    background: var(--gradient-brand);
+    color: #ffffff;
+    box-shadow: 0 2px 8px var(--primary-glow);
 }
 </style>
 

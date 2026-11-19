@@ -1,0 +1,1106 @@
+/**
+ * Skill Swap Marketplace - Admin Console Design System & Stylesheet
+ * High-performance, modern, glassmorphic UI for administration & moderation.
+ */
+
+/* ============================================================
+   1. LAYOUT & SHELL
+   ============================================================ */
+.ac-layout {
+    display: flex;
+    min-height: calc(100vh - 65px);
+    max-width: 1560px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* ── Sticky Sidebar ────────────────────────────────────────── */
+.ac-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0.85rem;
+    position: sticky;
+    top: 65px;
+    height: calc(100vh - 65px);
+    overflow-y: auto;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), width 0.2s ease;
+    z-index: 40;
+}
+
+.ac-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0 0.65rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1.15rem;
+}
+
+.ac-brand-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-brand);
+    color: #ffffff;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 14px var(--primary-glow);
+    flex-shrink: 0;
+}
+
+.ac-brand-badge svg {
+    width: 22px;
+    height: 22px;
+}
+
+.ac-brand-title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.ac-brand-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.ac-brand-sub::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success);
+}
+
+.ac-sidebar-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 0.6rem 0.75rem 0.35rem;
+    margin-top: 0.5rem;
+}
+
+/* ── Navigation Items ──────────────────────────────────────── */
+.ac-sidenav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+.ac-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 0.95rem;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+    width: 100%;
+    position: relative;
+    text-decoration: none;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.ac-nav-item:hover {
+    background: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    transform: translateX(2px);
+    text-decoration: none;
+}
+
+.ac-nav-item.active {
+    background: var(--primary-bg, rgba(99, 102, 241, 0.12));
+    color: var(--primary);
+    font-weight: 700;
+    box-shadow: inset 3px 0 0 var(--primary);
+    text-decoration: none;
+}
+
+.ac-nav-icon {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    opacity: 0.75;
+    transition: all var(--transition-fast);
+}
+
+.ac-nav-item:hover .ac-nav-icon {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.ac-nav-item.active .ac-nav-icon {
+    opacity: 1;
+    color: var(--primary);
+}
+
+.ac-nav-item.active .ac-nav-icon svg {
+    stroke: var(--primary);
+}
+
+.ac-nav-badge {
+    margin-left: auto;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    min-width: 20px;
+    text-align: center;
+    line-height: 1.3;
+    transition: all var(--transition-fast);
+}
+
+.ac-nav-badge--danger {
+    background: var(--danger);
+    color: #ffffff;
+    box-shadow: 0 2px 8px var(--danger-border);
+    animation: badgePulse 2s infinite ease-in-out;
+}
+
+.ac-nav-badge--neutral {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+.ac-nav-item.active .ac-nav-badge--neutral {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+/* ── Sidebar Footer Shortcuts ──────────────────────────────── */
+.ac-sidebar-footer {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ac-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-md);
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.ac-sidebar-link:hover {
+    background: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.ac-sidebar-link--danger {
+    color: var(--danger);
+}
+
+.ac-sidebar-link--danger:hover {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+
+/* ============================================================
+   2. MAIN CONTENT AREA & COMMAND HEADER
+   ============================================================ */
+.ac-main {
+    flex: 1;
+    min-width: 0;
+    padding: 1.75rem 2.25rem 3.5rem;
+    overflow-x: hidden;
+}
+
+/* ── Command Header Bar ────────────────────────────────────── */
+.ac-command-header {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 1.35rem 1.75rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.ac-command-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-brand);
+}
+
+.ac-command-left {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+}
+
+.ac-command-icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-lg);
+    background: var(--gradient-brand-subtle);
+    border: 1px solid var(--border-color);
+    display: grid;
+    place-items: center;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.ac-command-titles {
+    display: flex;
+    flex-direction: column;
+}
+
+.ac-command-breadcrumb {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 2px;
+}
+
+.ac-command-title {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.2;
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+}
+
+.ac-command-desc {
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    margin: 3px 0 0;
+}
+
+.ac-command-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.ac-live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.ac-live-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--success);
+    animation: badgePulse 2s infinite ease-in-out;
+}
+
+/* Refresh Data Button with rotating state */
+.btn-ac-refresh {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-ac-refresh:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: var(--primary-bg);
+    transform: translateY(-1px);
+}
+
+.btn-ac-refresh.is-spinning svg {
+    animation: ac-spin 0.8s linear infinite;
+}
+
+@keyframes ac-spin {
+    100% { transform: rotate(360deg); }
+}
+
+
+/* ============================================================
+   3. STAT CARDS GRID (DASHBOARD)
+   ============================================================ */
+.ac-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1.15rem;
+    margin-bottom: 2rem;
+}
+
+.ac-stat-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.35rem 1.35rem 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ac-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+}
+
+.ac-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-color-focus);
+}
+
+.ac-stat--blue::before   { background: linear-gradient(90deg, #6366f1, #06b6d4); }
+.ac-stat--green::before  { background: linear-gradient(90deg, #10b981, #34d399); }
+.ac-stat--purple::before { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+.ac-stat--teal::before   { background: linear-gradient(90deg, #0891b2, #22d3ee); }
+.ac-stat--amber::before  { background: linear-gradient(90deg, #d97706, #fbbf24); }
+.ac-stat--red::before    { background: linear-gradient(90deg, #dc2626, #f87171); }
+
+.ac-stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+}
+
+.ac-stat-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.ac-stat-icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    transition: transform var(--transition-fast);
+}
+
+.ac-stat-card:hover .ac-stat-icon-wrap {
+    transform: scale(1.1);
+}
+
+.ac-stat-val {
+    font-size: 2.35rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.45rem;
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+}
+
+.ac-stat-sub-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding-top: 0.4rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+.ac-stat-hint-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: var(--radius-xs);
+    background: var(--bg-surface-elevated);
+    color: var(--text-secondary);
+}
+
+
+/* ============================================================
+   4. DATA CARDS & TOOLBARS
+   ============================================================ */
+.ac-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.ac-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.15rem;
+    padding: 1.35rem 1.75rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-surface);
+}
+
+.ac-card-header-titles {
+    display: flex;
+    flex-direction: column;
+}
+
+.ac-card-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.ac-card-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 2px 0 0;
+}
+
+.ac-card-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* ── Modern Search Input ───────────────────────────────────── */
+.ac-search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0 0.85rem;
+    min-width: 240px;
+    transition: all var(--transition-fast);
+}
+
+.ac-search-box:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.ac-search-box svg {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.ac-search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    padding: 0.6rem 0;
+    width: 100%;
+}
+
+.ac-search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.ac-search-clear {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 2px 4px;
+    display: none;
+    line-height: 1;
+}
+
+.ac-search-clear:hover {
+    color: var(--text-primary);
+}
+
+.ac-search-clear.visible {
+    display: block;
+}
+
+/* ── Filter Pills Bar ──────────────────────────────────────── */
+.ac-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--bg-surface-elevated);
+    padding: 3px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.ac-pill-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 5px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.ac-pill-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface);
+}
+
+.ac-pill-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 2px 8px var(--primary-glow);
+}
+
+.ac-pill-count {
+    font-size: 0.7rem;
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+}
+
+.ac-pill-btn.active .ac-pill-count {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Result count counter bar */
+.ac-table-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1.75rem;
+    background: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+
+/* ============================================================
+   5. TABLES & ROW STYLING
+   ============================================================ */
+.ac-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.ac-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: left;
+}
+
+.ac-table th {
+    padding: 0.85rem 1.35rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    background: var(--bg-surface-elevated);
+}
+
+.ac-table td {
+    padding: 0.95rem 1.35rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+    color: var(--text-primary);
+}
+
+.ac-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ac-table tbody tr {
+    transition: background var(--transition-fast);
+}
+
+.ac-table tbody tr:hover td {
+    background: var(--bg-surface-elevated);
+}
+
+/* User cell in table */
+.ac-user-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.ac-user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    flex-shrink: 0;
+    background: var(--bg-surface-elevated);
+}
+
+.ac-user-names {
+    display: flex;
+    flex-direction: column;
+}
+
+.ac-user-display-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.25;
+}
+
+.ac-user-handle {
+    font-size: 0.78rem;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.ac-user-handle:hover {
+    text-decoration: underline;
+}
+
+/* Role badges */
+.ac-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.ac-role-badge--admin {
+    background: var(--primary-bg);
+    color: var(--primary);
+    border: 1px solid var(--primary-border);
+}
+
+.ac-role-badge--user {
+    background: var(--bg-surface-elevated);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+
+/* ============================================================
+   6. ACTIVITY FEED
+   ============================================================ */
+.ac-activity-container {
+    padding: 0.5rem 1.75rem 1.5rem;
+}
+
+.ac-activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.15rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    transition: transform var(--transition-fast);
+}
+
+.ac-activity-item:last-child {
+    border-bottom: none;
+}
+
+.ac-activity-item:hover {
+    transform: translateX(3px);
+}
+
+.ac-activity-icon-badge {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    display: grid;
+    place-items: center;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.ac-activity-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.ac-activity-top-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 3px;
+}
+
+.ac-activity-badge {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: var(--radius-xs);
+    background: var(--bg-surface-elevated);
+    color: var(--text-muted);
+}
+
+.ac-activity-badge--user {
+    background: var(--primary-bg);
+    color: var(--primary);
+}
+
+.ac-activity-badge--swap {
+    background: var(--secondary-glow);
+    color: var(--secondary);
+}
+
+.ac-activity-badge--skill {
+    background: var(--accent-glow);
+    color: var(--accent);
+}
+
+.ac-activity-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.ac-activity-detail {
+    font-size: 0.92rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   7. COMMUNITY REPORTS CARDS
+   ============================================================ */
+.ac-reports-container {
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+}
+
+.ac-report-card {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    position: relative;
+    transition: all var(--transition-fast);
+}
+
+.ac-report-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-color-hover);
+}
+
+.ac-report-card.is-pending {
+    border-left: 4px solid var(--danger);
+    background: linear-gradient(180deg, var(--danger-bg) 0%, var(--bg-surface-elevated) 40%);
+}
+
+.ac-report-card.is-resolved {
+    border-left: 4px solid var(--success);
+}
+
+.ac-report-card.is-dismissed {
+    border-left: 4px solid var(--text-muted);
+    opacity: 0.85;
+}
+
+.ac-report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.15rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ac-report-type-tag {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ac-report-parties {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.15rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+}
+
+.ac-report-party {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.ac-report-party-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+.ac-report-arrow {
+    display: grid;
+    place-items: center;
+    color: var(--text-muted);
+    font-size: 1.25rem;
+}
+
+.ac-report-reason-box {
+    background: var(--bg-surface);
+    border-left: 3px solid var(--primary);
+    padding: 1rem 1.25rem;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+}
+
+.ac-report-actions-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--border-color);
+}
+
+
+/* ============================================================
+   8. MODALS & CONFIRM DIALOGS
+   ============================================================ */
+.ac-confirm-dialog-content {
+    text-align: center;
+    padding: 1rem 0.5rem;
+}
+
+.ac-confirm-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-full);
+    display: grid;
+    place-items: center;
+    margin: 0 auto 1.15rem;
+    font-size: 1.75rem;
+}
+
+.ac-confirm-icon--danger {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
+    color: var(--danger);
+}
+
+.ac-confirm-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.ac-confirm-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 380px;
+    margin: 0 auto 1.5rem;
+}
+
+
+/* ============================================================
+   9. RESPONSIVE ADAPTATIONS
+   ============================================================ */
+@media (max-width: 1024px) {
+    .ac-layout {
+        flex-direction: column;
+    }
+
+    .ac-sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0.85rem 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        gap: 0.75rem;
+    }
+
+    .ac-sidebar-brand {
+        padding-bottom: 0;
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .ac-sidebar-section-title {
+        display: none;
+    }
+
+    .ac-sidenav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .ac-nav-item {
+        padding: 0.5rem 0.85rem;
+        font-size: 0.82rem;
+        width: auto;
+    }
+
+    .ac-sidebar-footer {
+        flex-direction: row;
+        border-top: none;
+        padding-top: 0;
+        margin-top: 0;
+        margin-left: auto;
+    }
+
+    .ac-main {
+        padding: 1.5rem 1rem 3rem;
+    }
+
+    .ac-report-parties {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .ac-report-arrow {
+        transform: rotate(90deg);
+    }
+}
+
+@media (max-width: 640px) {
+    .ac-command-header {
+        padding: 1rem;
+    }
+
+    .ac-command-title {
+        font-size: 1.3rem;
+    }
+
+    .ac-stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .ac-card-header {
+        padding: 1rem;
+    }
+
+    .ac-search-box {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .ac-filter-group {
+        width: 100%;
+        overflow-x: auto;
+    }
+}

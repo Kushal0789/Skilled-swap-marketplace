@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // GET: List users
 try {
     $stmt = $pdo->query("
-        SELECT u.id, u.name, u.username, u.email, u.role, u.status, u.created_at,
+        SELECT u.id, u.name, u.username, u.email, u.role, u.status, u.profile_image, u.created_at,
                (SELECT COUNT(*) FROM user_skills WHERE user_id = u.id AND skill_type = 'OFFER') AS offered_count,
                (SELECT COUNT(*) FROM user_skills WHERE user_id = u.id AND skill_type = 'WANT') AS wanted_count
         FROM users u
@@ -70,6 +70,7 @@ try {
 
     foreach ($users as &$u) {
         $u['created_formatted'] = date('M j, Y', strtotime($u['created_at']));
+        $u['avatar_url'] = get_avatar_url($u['profile_image'] ?? 'default-avatar.svg');
     }
 
     json_response(true, 'Users loaded.', $users);

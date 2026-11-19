@@ -131,16 +131,9 @@ Spawns Chat Thread & Allows Mutual Review
 
 ---
 
-### C. Near Real-Time Messaging via Asynchronous Polling (`api/messages/`)
+### C. Direct Messaging (Disabled / Removed)
 
-Instead of requiring complex WebSocket servers (such as Ratchet or Node.js daemons), the chat client implements lightweight **delta polling**:
-1. When a conversation is opened, it retrieves the initial history and stores the highest message ID: `lastMessageId`.
-2. Every 3.5 seconds, `fetchMessages(true)` requests:
-   `GET api/messages/list.php?conversation_id=X&since_id={lastMessageId}`
-3. The server executes:
-   `SELECT * FROM messages WHERE conversation_id = :cid AND id > :since_id`
-4. If no new messages exist, the payload size is ~20 bytes, placing virtually zero burden on the Apache server.
-5. New messages are seamlessly appended to the DOM without layout disruption or full re-renders.
+Direct messaging has been decoupled and removed from the active interface. Swap proposals and coordination are managed directly via the Swap Requests workflow.
 
 ---
 

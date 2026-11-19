@@ -13,10 +13,6 @@
     .brand-col {
         grid-column: span 2;
     }
-
-    .chat-layout {
-        grid-template-columns: 280px 1fr;
-    }
 }
 
 /* Tablets & Mobile Screens (< 768px) */
@@ -86,23 +82,6 @@
         width: 100%;
     }
 
-    .chat-layout {
-        grid-template-columns: 1fr;
-        height: calc(100vh - 160px);
-    }
-
-    .chat-layout.chat-open .chat-conv-sidebar {
-        display: none;
-    }
-
-    .chat-layout:not(.chat-open) .chat-main-area {
-        display: none;
-    }
-
-    .chat-mobile-back-btn {
-        display: inline-flex;
-    }
-
     .match-exchange-visual {
         flex-direction: column;
         gap: 0.75rem;
@@ -138,10 +117,5 @@
 
     .dash-welcome-card {
         padding: 1.25rem 1rem !important;
-    }
-
-    .chat-layout {
-        border-radius: var(--radius-md);
-        height: calc(100vh - 140px);
     }
 }

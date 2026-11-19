@@ -1,0 +1,308 @@
+/**
+ * Skill Swap Marketplace - Report & Feedback Page Stylesheet
+ * Responsive, accessible, and integrated with the platform's dark/light design system.
+ */
+
+.report-page-container {
+    max-width: 1040px;
+    margin: 2.5rem auto 4rem;
+    padding: 0 1.5rem;
+}
+
+.report-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.report-header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 4px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: var(--primary-bg);
+    color: var(--primary);
+    border: 1px solid var(--primary-border);
+    margin-bottom: 0.85rem;
+}
+
+.report-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.65rem;
+    letter-spacing: -0.02em;
+}
+
+.report-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ── Main Two-Column Layout (Form + Guidelines/Past Submissions) ── */
+.report-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+/* ── Form Card ─────────────────────────────────────────────── */
+.report-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 2.25rem;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.report-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-brand);
+}
+
+.report-card-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.report-card-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Category Selection Pills or Grid */
+.category-select-wrapper {
+    position: relative;
+}
+
+.category-icon-preview {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.15rem;
+    pointer-events: none;
+}
+
+.form-select.has-icon {
+    padding-left: 2.85rem;
+}
+
+/* ── Reported User Accordion / Section ──────────────────────── */
+.reported-user-group {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.35rem;
+    margin-bottom: 1.5rem;
+    transition: all var(--transition-normal);
+}
+
+.reported-user-group.highlighted {
+    border-color: var(--primary);
+    background: var(--primary-bg);
+    box-shadow: 0 0 16px var(--primary-glow);
+}
+
+.reported-user-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.65rem;
+}
+
+.reported-user-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.reported-user-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.reported-user-group.highlighted .reported-user-badge {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+.reported-user-help {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.85rem;
+    line-height: 1.45;
+}
+
+/* ── Char Count Indicator ─────────────────────────────────── */
+.char-count-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+}
+
+/* ── Submit Row ───────────────────────────────────────────── */
+.report-submit-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.report-privacy-notice {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* ── Sidebar Guidance Cards ───────────────────────────────── */
+.report-side-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.report-side-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.report-guidelines-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 0;
+    margin: 0;
+}
+
+.report-guidelines-list li {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    line-height: 1.5;
+}
+
+.report-guidelines-list li svg {
+    color: var(--primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* ── Past Submissions Feed ────────────────────────────────── */
+.my-reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+.my-report-item {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+    transition: all var(--transition-fast);
+}
+
+.my-report-item:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.my-report-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.my-report-type {
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--primary);
+}
+
+.my-report-subject {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.my-report-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .report-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-card {
+        padding: 1.5rem;
+    }
+
+    .report-title {
+        font-size: 1.85rem;
+    }
+}

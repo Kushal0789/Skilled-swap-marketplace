@@ -1,0 +1,80 @@
+
+
+/* ================================================================
+   MESSAGING SYSTEM — Responsive Breakpoints
+   ================================================================ */
+
+/* Tablets (< 768px): overlay/stack layout */
+@media (max-width: 768px) {
+    .messages-page-wrapper {
+        padding: 0;
+        gap: 0;
+        height: calc(100vh - 61px);
+        border-radius: 0;
+        position: relative;
+    }
+
+    /* Sidebar takes full width on mobile */
+    .conv-sidebar {
+        width: 100%;
+        min-width: unset;
+        position: absolute;
+        inset: 0;
+        border-radius: 0;
+        border: none;
+        z-index: 10;
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* When a chat is open, slide sidebar out to the left */
+    .conv-sidebar.mobile-hidden {
+        transform: translateX(-100%);
+        pointer-events: none;
+    }
+
+    /* Chat panel takes full width */
+    .chat-panel {
+        width: 100%;
+        position: absolute;
+        inset: 0;
+        border-radius: 0;
+        border: none;
+        transform: translateX(100%);
+        transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 10;
+    }
+
+    .chat-panel.mobile-chat-visible {
+        transform: translateX(0);
+    }
+
+    /* Show back button on mobile */
+    .chat-back-btn {
+        display: grid;
+    }
+
+    /* Message bubbles: allow up to 85% width on small screens */
+    .msg-bubble-wrap {
+        max-width: 85%;
+    }
+
+    /* Composer textarea: smaller placeholder text */
+    .composer-textarea {
+        font-size: 0.88rem;
+    }
+}
+
+/* Small Mobile (< 480px) */
+@media (max-width: 480px) {
+    .msg-bubble-wrap {
+        max-width: 90%;
+    }
+
+    .chat-header-name {
+        font-size: 0.92rem;
+    }
+
+    .chat-messages-area {
+        padding: 1rem 0.75rem;
+    }
+}
