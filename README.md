@@ -1,4 +1,3 @@
-::: {align="center"}
 # 🤝 Skilled Swap Marketplace
 
 ### Share Skills • Exchange Knowledge • Grow Together
@@ -7,33 +6,22 @@ A peer-to-peer skill-sharing platform where people can teach what they
 know, learn something new, and connect with others through skill
 exchanges.
 
-```{=html}
-<p>
-```
-`<a href="https://github.com/Kushal0789/Skilled-swap-marketplace">`{=html}
-`<img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github" alt="GitHub Repository">`{=html}
-`</a>`{=html}
-`<img src="https://img.shields.io/badge/PHP-8.x-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">`{=html}
-`<img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">`{=html}
-`<img src="https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">`{=html}
-```{=html}
-</p>
-```
-```{=html}
-<p>
-```
-`<img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5">`{=html}
-`<img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3">`{=html}
-`<img src="https://img.shields.io/badge/Fetch%20API-HTTP-4CAF50?style=flat-square" alt="Fetch API">`{=html}
-`<img src="https://img.shields.io/badge/PDO-PHP%20Database-777BB4?style=flat-square" alt="PDO">`{=html}
-`<img src="https://img.shields.io/badge/Apache-Server-D22128?style=flat-square&logo=apache&logoColor=white" alt="Apache">`{=html}
-`<img src="https://img.shields.io/badge/XAMPP-Local%20Development-FB7A24?style=flat-square&logo=xampp&logoColor=white" alt="XAMPP">`{=html}
-```{=html}
-</p>
-```
+[![GitHub
+Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/Kushal0789/Skilled-swap-marketplace)
+![PHP](https://img.shields.io/badge/PHP-8.x-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+![Fetch
+API](https://img.shields.io/badge/Fetch%20API-HTTP-4CAF50?style=flat-square)
+![PDO](https://img.shields.io/badge/PDO-PHP%20Database-777BB4?style=flat-square)
+![Apache](https://img.shields.io/badge/Apache-Server-D22128?style=flat-square&logo=apache&logoColor=white)
+![XAMPP](https://img.shields.io/badge/XAMPP-Local%20Development-FB7A24?style=flat-square&logo=xampp&logoColor=white)
+
 **[View
 Repository](https://github.com/Kushal0789/Skilled-swap-marketplace)**
-:::
 
 ------------------------------------------------------------------------
 
@@ -64,8 +52,8 @@ Repository](https://github.com/Kushal0789/Skilled-swap-marketplace)**
 ## 📌 About the Project
 
 **Skilled Swap Marketplace** is a full-stack, peer-to-peer skill-sharing
-web application. It is designed to help people exchange knowledge by
-connecting users who have skills to teach with users who want to learn.
+web application. It helps people exchange knowledge by connecting users
+who have skills to teach with users who want to learn.
 
 Rather than making every learning interaction a paid transaction, the
 platform encourages users to exchange their knowledge and abilities with
@@ -131,15 +119,14 @@ The main objectives are to:
   -----------------------------------------------------------------------
   Feature                             Description
   ----------------------------------- -----------------------------------
-  🔐 User Authentication              User registration, login, sessions,
+  🔐 User Authentication              Registration, login, sessions,
                                       password hashing, and logout
 
   👤 User Profiles                    View profile information, skills,
                                       and other profile details
 
-  ✏️ Profile Editing                  Open a dedicated editing interface
-                                      to update profile information and
-                                      skills
+  ✏️ Profile Editing                  Dedicated editing interface for
+                                      profile information and skills
 
   🛠️ Skill Management                 Manage skills users can offer and
                                       skills they want to learn
@@ -153,7 +140,6 @@ The main objectives are to:
                                       skill-swap requests
 
   💬 Messaging                        Communicate with other users
-                                      through the messaging section
 
   🔔 Notifications                    Receive updates related to platform
                                       activity
@@ -350,8 +336,8 @@ Skilled-swap-marketplace/
 └── README.md
 ```
 
-*Note: This is a high-level overview. Individual files and folders may
-change as the project develops.*
+*This is a high-level overview. Individual files and folders may change
+as the project develops.*
 
 ------------------------------------------------------------------------
 
@@ -413,8 +399,8 @@ fetch("api/example.php", {
 });
 ```
 
-This is a simplified example of the request pattern. Actual endpoints
-may use different methods, request data, and response formats.
+This is a simplified example. Actual endpoints may use different
+methods, request data, and response formats.
 
 ------------------------------------------------------------------------
 
@@ -452,8 +438,6 @@ Install the following:
 -   A modern web browser
 
 ### 1. Clone the Repository
-
-Open a terminal and run:
 
 ``` bash
 git clone https://github.com/Kushal0789/Skilled-swap-marketplace.git
@@ -526,29 +510,32 @@ The following screenshots show selected pages of the application.
 
 ### 🏠 Home Page
 
-`<img src="https://github.com/user-attachments/assets/4fae9936-c152-4327-bacf-134129c7dc66" alt="Skilled Swap Marketplace Home Page">`{=html}
+![Skilled Swap Marketplace Home
+Page](https://github.com/user-attachments/assets/4fae9936-c152-4327-bacf-134129c7dc66)
 
 ### 🔐 Login Page
 
-`<img src="https://github.com/user-attachments/assets/d86f8377-e874-475d-9844-079c907b055b" alt="Skilled Swap Marketplace Login Page">`{=html}
+![Skilled Swap Marketplace Login
+Page](https://github.com/user-attachments/assets/d86f8377-e874-475d-9844-079c907b055b)
 
 ### 📊 Dashboard
 
-`<img src="https://github.com/user-attachments/assets/b83fe93f-61ab-4fe6-9394-37ca37c02e5b" alt="Skilled Swap Marketplace Dashboard">`{=html}
+![Skilled Swap Marketplace
+Dashboard](https://github.com/user-attachments/assets/b83fe93f-61ab-4fe6-9394-37ca37c02e5b)
 
 ### 🔎 Discover Page
 
-`<img src="https://github.com/user-attachments/assets/7afb55d8-fd26-4d5d-9c3e-f6b2c9dabdf3" alt="Skilled Swap Marketplace Discover Page">`{=html}
+![Skilled Swap Marketplace Discover
+Page](https://github.com/user-attachments/assets/7afb55d8-fd26-4d5d-9c3e-f6b2c9dabdf3)
 
-*More screenshots can be added here as the interface develops.*
+*More screenshots can be added as the interface develops.*
 
 ------------------------------------------------------------------------
 
 ## 📚 Documentation
 
-Additional project documentation is available in:
-
--   [`DOCUMENTATION.md`](DOCUMENTATION.md)
+Additional project documentation is available in
+[`DOCUMENTATION.md`](DOCUMENTATION.md).
 
 ------------------------------------------------------------------------
 
@@ -597,16 +584,13 @@ Then open a Pull Request on GitHub.
 
 ## 👨‍💻 Author
 
-::: {align="center"}
 ### Kushal Bhusal
 
-`<a href="https://github.com/Kushal0789">`{=html}
-`<img src="https://img.shields.io/badge/GitHub-Kushal0789-181717?style=for-the-badge&logo=github" alt="GitHub Profile">`{=html}
-`</a>`{=html}
+[![GitHub
+Profile](https://img.shields.io/badge/GitHub-Kushal0789-181717?style=for-the-badge&logo=github)](https://github.com/Kushal0789)
 
 Built as a full-stack web application project focused on peer-to-peer
 skill exchange.
-:::
 
 ------------------------------------------------------------------------
 
@@ -625,8 +609,6 @@ that the project is licensed for reuse.
 If you find this project useful or interesting, consider giving the
 repository a ⭐ on GitHub.
 
-::: {align="center"}
 ### 🤝 Share What You Know. Learn What You Love. Grow Together.
 
 **Built with PHP • MySQL • JavaScript • HTML • CSS**
-:::
