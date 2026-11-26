@@ -8,6 +8,7 @@ define('APP_INIT', true);
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/availability.php';
 
 $currentUid = current_user_id();
 $viewUserId = !empty($_GET['id']) ? (int)$_GET['id'] : $currentUid;
@@ -72,7 +73,11 @@ $reviews = $revStmt->fetchAll();
 $totalReviews = count($reviews);
 $avgRating = $totalReviews > 0 ? round(array_sum(array_column($reviews, 'rating')) / $totalReviews, 1) : 0;
 
+// 4. Fetch configured availability & weekly schedule
+$userAvailability = get_user_availability($pdo, $viewUserId);
+
 $pageTitle = e($targetUser['name']) . ' - Profile - Skill Swap';
+$pageCss = 'availability.css';
 $pageScript = 'profile.js';
 include __DIR__ . '/includes/header.php';
 ?>
@@ -89,6 +94,12 @@ include __DIR__ . '/includes/header.php';
                 <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
                     <h1 class="profile-name"><?= e($targetUser['name']) ?></h1>
                     <span class="profile-username">@<?= e($targetUser['username']) ?></span>
+                    <?php if (!empty($userAvailability['configured']) && !empty($userAvailability['status_meta'])): ?>
+                        <span class="avail-status-badge status-<?= e($userAvailability['status']) ?>">
+                            <span class="avail-status-dot"></span>
+                            <?= e($userAvailability['status_meta']['label']) ?>
+                        </span>
+                    <?php endif; ?>
                 </div>
 
                 <div class="profile-meta-row">
@@ -151,12 +162,57 @@ include __DIR__ . '/includes/header.php';
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         Edit Profile &amp; Skills
                     </a>
+                    <a href="availability.php" class="btn btn-secondary btn-sm" id="btn-manage-availability">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Manage Availability
+                    </a>
                 <?php else: ?>
                     <a href="<?= is_logged_in() ? 'discover.php' : 'login.php' ?>" class="btn btn-primary btn-lg">Propose Skill Swap</a>
                 <?php endif; ?>
             </div>
         </div>
     </div>
+
+    <?php if (!empty($userAvailability['configured'])): ?>
+        <!-- Compact Configured Availability Overview -->
+        <div class="card profile-availability-card" id="profile-availability-section">
+            <div class="profile-avail-header">
+                <div class="profile-avail-title-group">
+                    <h3 class="card-title" style="font-size: 1.08rem;">Availability</h3>
+                    <?php if (!empty($userAvailability['status_meta'])): ?>
+                        <span class="avail-status-badge status-<?= e($userAvailability['status']) ?>">
+                            <span class="avail-status-dot"></span>
+                            <?= e($userAvailability['status_meta']['label']) ?>
+                        </span>
+                    <?php endif; ?>
+                </div>
+                <?php if ($isOwnProfile): ?>
+                    <a href="availability.php" class="btn-link" style="font-size: 0.84rem;">Edit Schedule &rarr;</a>
+                <?php endif; ?>
+            </div>
+
+            <?php if ($userAvailability['configured_days_count'] > 0): ?>
+                <div class="profile-avail-days-grid">
+                    <?php foreach ($userAvailability['days'] as $dayData): ?>
+                        <?php if (!$dayData['enabled'] || empty($dayData['slots'])) continue; ?>
+                        <div class="profile-avail-day-pill">
+                            <span class="avail-day-dot" aria-hidden="true"></span>
+                            <span class="avail-day-name"><?= e($dayData['day']) ?>:</span>
+                            <span class="avail-day-times">
+                                <?= e(implode(', ', array_column($dayData['slots'], 'formatted'))) ?>
+                            </span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p class="profile-avail-empty-note">
+                    <?= $userAvailability['status'] === 'unavailable'
+                        ? 'Currently unavailable for new skill exchanges.'
+                        : 'No specific weekly time ranges configured yet.' ?>
+                </p>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
     <!-- Two-Column Skills Grid: Read-Only View of Offered vs Wanted -->
     <div class="skills-management-grid">
@@ -469,6 +525,68 @@ include __DIR__ . '/includes/header.php';
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+}
+
+.profile-availability-card {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.75rem;
+}
+
+.profile-avail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.85rem;
+}
+
+.profile-avail-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.profile-avail-days-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.profile-avail-day-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.42rem 0.8rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    font-size: 0.84rem;
+    line-height: 1.3;
+}
+
+.avail-day-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    flex-shrink: 0;
+}
+
+.avail-day-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.avail-day-times {
+    color: var(--text-secondary);
+}
+
+.profile-avail-empty-note {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    margin: 0;
 }
 
 .skills-card-list {

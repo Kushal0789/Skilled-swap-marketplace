@@ -132,6 +132,51 @@ document.addEventListener('DOMContentLoaded', () => {
         attachMatchActionHandlers();
     }
 
+    function renderAvailabilityCompatibility(avail) {
+        if (!avail) {
+            return `
+                <div class="match-compat-row">
+                    <div class="match-compat-top">
+                        <span class="compat-badge no-common">
+                            <span class="compat-dot"></span>No Common Availability
+                        </span>
+                    </div>
+                </div>
+            `;
+        }
+
+        const isCompatible = Boolean(avail.is_compatible);
+        const compatLabel = avail.compatibility_label || avail.label || (isCompatible ? 'Schedule Compatible' : 'No Common Availability');
+        const statusMeta = avail.partner_meta;
+        const partnerBadge = statusMeta && avail.partner_status
+            ? `<span class="avail-status-badge status-${escapeHtml(avail.partner_status)}" style="padding: 0.18rem 0.55rem; font-size: 0.72rem;"><span class="avail-status-dot"></span>${escapeHtml(statusMeta.label)}</span>`
+            : '';
+
+        let overlapsHtml = '';
+        if (isCompatible && Array.isArray(avail.overlaps) && avail.overlaps.length > 0) {
+            const shown = avail.overlaps.slice(0, 3);
+            const extra = avail.overlaps.length - shown.length;
+            overlapsHtml = `
+                <div class="compat-overlap-chips">
+                    ${shown.map(o => `<span class="compat-overlap-chip">${escapeHtml(o.short_day)}: ${escapeHtml(o.formatted)}</span>`).join('')}
+                    ${extra > 0 ? `<span class="compat-overlap-chip">+${extra} more</span>` : ''}
+                </div>
+            `;
+        }
+
+        return `
+            <div class="match-compat-row">
+                <div class="match-compat-top">
+                    <span class="compat-badge ${isCompatible ? 'is-compatible' : 'no-common'}">
+                        <span class="compat-dot"></span>${escapeHtml(compatLabel)}
+                    </span>
+                    ${partnerBadge}
+                </div>
+                ${overlapsHtml}
+            </div>
+        `;
+    }
+
     function renderTwoWayCard(match) {
         const statusBadge = match.swap_status
             ? `<span class="status-badge ${escapeHtml(match.swap_status.status)}">${escapeHtml(match.swap_status.status)}</span>`
@@ -172,9 +217,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
 
-                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1rem;">
                     ${escapeHtml(match.explanation)}
                 </p>
+
+                ${renderAvailabilityCompatibility(match.availability)}
 
                 <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 1rem;">
                     <div>${statusBadge}</div>
@@ -209,6 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="skill-badge-group" style="margin-bottom: 1rem;">
                     ${offeredSkills}
                 </div>
+
+                ${renderAvailabilityCompatibility(match.availability)}
 
                 <div style="display: flex; justify-content: flex-end; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
                     <a href="profile.php?id=${match.id}" class="btn btn-ghost btn-sm">View Profile</a>

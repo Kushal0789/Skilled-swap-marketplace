@@ -12,6 +12,7 @@ require_once __DIR__ . '/includes/functions.php';
 require_auth();
 
 $pageTitle = 'Skill Matchmaker - Reciprocal Exchanges - Skill Swap';
+$pageCss = 'availability.css';
 $pageScript = 'matches.js';
 include __DIR__ . '/includes/header.php';
 ?>
@@ -22,6 +23,9 @@ include __DIR__ . '/includes/header.php';
         <h1 class="matches-title">Skill Compatibility Engine</h1>
         <p class="matches-desc">
             We analyze your offered skills and wanted learning wishlist to discover peers where both parties benefit equally.
+        </p>
+        <p style="margin-top: 0.65rem; font-size: 0.85rem;">
+            <a href="availability.php" class="btn-link">Manage your weekly availability &rarr;</a>
         </p>
 
         <!-- Live Match Filter Search Bar -->
@@ -106,6 +110,77 @@ include __DIR__ . '/includes/header.php';
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 1.75rem;
+}
+
+/* Schedule Compatibility Badges on Match Cards */
+.match-compat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 1rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+}
+
+.match-compat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.compat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.compat-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.compat-badge.is-compatible {
+    color: #34d399;
+}
+
+.compat-badge.is-compatible .compat-dot {
+    background: #10b981;
+}
+
+.compat-badge.no-common {
+    color: var(--text-muted);
+}
+
+.compat-badge.no-common .compat-dot {
+    background: #64748b;
+}
+
+.compat-overlap-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.compat-overlap-chip {
+    font-size: 0.74rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 2px 7px;
+}
+
+html[data-theme="light"] .compat-badge.is-compatible {
+    color: #047857;
 }
 
 @media (max-width: 768px) {

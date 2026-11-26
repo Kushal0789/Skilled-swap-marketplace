@@ -171,6 +171,7 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
                                 <a href="report.php" class="dropdown-item">Report &amp; Feedback</a>
                             <?php else: ?>
                                 <a href="profile.php" class="dropdown-item">My Profile &amp; Skills</a>
+                                <a href="availability.php" class="dropdown-item">Availability</a>
                                 <a href="settings.php" class="dropdown-item">Settings</a>
                                 <a href="report.php" class="dropdown-item">Report &amp; Feedback</a>
                             <?php endif; ?>
@@ -208,6 +209,7 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
                     <a href="requests.php" class="mobile-nav-link">Requests</a>
                     <a href="messages.php" class="mobile-nav-link">Messages</a>
                     <a href="profile.php" class="mobile-nav-link">Profile &amp; Skills</a>
+                    <a href="availability.php" class="mobile-nav-link">Availability</a>
                     <a href="settings.php" class="mobile-nav-link">Settings</a>
                     <a href="report.php" class="mobile-nav-link">Report &amp; Feedback</a>
                     <a href="logout.php" class="mobile-nav-link text-danger">Sign Out</a>

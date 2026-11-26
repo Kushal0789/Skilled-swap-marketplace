@@ -1,0 +1,571 @@
+/**
+ * Availability Management & Profile/Matches Availability Badges Styles
+ * Skill Swap Marketplace
+ */
+
+.availability-page-container {
+    max-width: 960px;
+    margin: 2rem auto 4rem;
+    padding: 0 1.5rem;
+}
+
+/* Header */
+.avail-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+}
+
+.avail-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    transition: color var(--transition-fast);
+}
+
+.avail-back-link:hover {
+    color: var(--primary);
+}
+
+.avail-page-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.avail-page-subtitle {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 0.35rem 0 0;
+}
+
+.avail-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+/* Status Pill Badge (Reusable across Availability, Profile, Matches) */
+.avail-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.32rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    border: 1px solid var(--border-color);
+    background: var(--bg-surface-elevated);
+    color: var(--text-secondary);
+}
+
+.avail-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--text-muted);
+}
+
+.avail-status-badge.status-available {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.28);
+    color: #34d399;
+}
+
+.avail-status-badge.status-available .avail-status-dot {
+    background: #10b981;
+}
+
+.avail-status-badge.status-busy {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.28);
+    color: #fbbf24;
+}
+
+.avail-status-badge.status-busy .avail-status-dot {
+    background: #f59e0b;
+}
+
+.avail-status-badge.status-unavailable {
+    background: rgba(148, 163, 184, 0.1);
+    border-color: rgba(148, 163, 184, 0.24);
+    color: var(--text-muted);
+}
+
+.avail-status-badge.status-unavailable .avail-status-dot {
+    background: #64748b;
+}
+
+/* Feedback Banner */
+.avail-feedback-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+}
+
+.avail-feedback-banner.is-success {
+    background: var(--success-bg);
+    border-color: var(--success-border);
+    color: var(--success);
+}
+
+.avail-feedback-banner.is-error {
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
+    color: var(--danger);
+}
+
+/* Section Cards */
+.avail-section-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.avail-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.avail-section-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+}
+
+.avail-section-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.avail-quick-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* A. Status Radio Cards */
+.status-options-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
+.status-option-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.95rem 1.05rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.status-option-card:hover {
+    border-color: var(--border-color-hover);
+}
+
+.status-option-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.status-option-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+
+.status-option-indicator.dot-available { background: #10b981; }
+.status-option-indicator.dot-busy { background: #f59e0b; }
+.status-option-indicator.dot-unavailable { background: #64748b; }
+
+.status-option-title {
+    display: block;
+    font-size: 0.94rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.status-option-desc {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+}
+
+.status-option-card.is-selected[data-status="available"] {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.45);
+}
+
+.status-option-card.is-selected[data-status="busy"] {
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.45);
+}
+
+.status-option-card.is-selected[data-status="unavailable"] {
+    background: rgba(148, 163, 184, 0.08);
+    border-color: rgba(148, 163, 184, 0.42);
+}
+
+.status-unavailable-note {
+    margin-top: 0.85rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: var(--radius-sm);
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid var(--border-color);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+/* B. Weekly Schedule Rows */
+.weekly-schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.day-row {
+    display: grid;
+    grid-template-columns: 205px 1fr;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.9rem 1.05rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--bg-surface-elevated);
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.day-row.is-available {
+    border-left: 3px solid #10b981;
+}
+
+.day-row.is-disabled {
+    background: rgba(17, 23, 38, 0.45);
+    opacity: 0.82;
+}
+
+.day-row.has-error {
+    border-color: var(--danger);
+    border-left: 3px solid var(--danger);
+}
+
+.day-row-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 34px;
+}
+
+/* Toggle Switch */
+.day-switch {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 22px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.day-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.day-switch-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color-hover);
+    border-radius: var(--radius-full);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.day-switch-slider::before {
+    content: '';
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    top: 3px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.day-switch input:checked + .day-switch-slider {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: #10b981;
+}
+
+.day-switch input:checked + .day-switch-slider::before {
+    transform: translateX(16px);
+    background: #10b981;
+}
+
+.day-name-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.day-name-label {
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.day-state-text {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.day-row.is-available .day-state-text {
+    color: #34d399;
+    font-weight: 500;
+}
+
+.day-row-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.day-unavailable-placeholder {
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+}
+
+.day-slots-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.time-slot-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.time-select {
+    padding: 0.42rem 0.65rem;
+    font-size: 0.84rem;
+    font-weight: 500;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    outline: none;
+    cursor: pointer;
+    min-width: 112px;
+    transition: border-color var(--transition-fast);
+}
+
+.time-select:focus {
+    border-color: var(--primary);
+}
+
+.time-slot-row.slot-invalid .time-select {
+    border-color: var(--danger);
+}
+
+.time-separator {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    user-select: none;
+}
+
+.btn-slot-remove {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-slot-remove:hover {
+    color: var(--danger);
+    border-color: var(--danger);
+    background: var(--danger-bg);
+}
+
+.day-row-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 0.15rem;
+}
+
+.btn-add-slot {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: 1px dashed var(--border-color-hover);
+    border-radius: var(--radius-sm);
+    padding: 0.32rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-add-slot:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-bg);
+}
+
+.day-error-msg {
+    font-size: 0.78rem;
+    color: var(--danger);
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* Save Footer */
+.avail-save-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+}
+
+.avail-save-summary {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Light Theme Adjustments */
+html[data-theme="light"] .avail-status-badge.status-available {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+    color: #047857;
+}
+
+html[data-theme="light"] .avail-status-badge.status-busy {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #b45309;
+}
+
+html[data-theme="light"] .avail-status-badge.status-unavailable {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #475569;
+}
+
+html[data-theme="light"] .avail-section-card {
+    background: #ffffff;
+    border-color: #e5e9f0;
+}
+
+html[data-theme="light"] .day-row {
+    background: #f8fafc;
+}
+
+html[data-theme="light"] .day-row.is-disabled {
+    background: #f1f5f9;
+}
+
+html[data-theme="light"] .day-row.is-available .day-state-text {
+    color: #047857;
+}
+
+html[data-theme="light"] .status-option-card {
+    background: #f8fafc;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+    .availability-page-container {
+        padding: 0 1rem;
+        margin: 1.5rem auto 3rem;
+    }
+
+    .avail-section-card {
+        padding: 1.25rem 1.1rem;
+    }
+
+    .status-options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .day-row {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+    }
+
+    .avail-save-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .avail-save-footer .btn-primary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .time-select {
+        flex: 1;
+        min-width: 96px;
+    }
+}

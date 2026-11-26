@@ -12,6 +12,7 @@ $rootDir = dirname(__DIR__, 2);
 require_once $rootDir . '/config/db.php';
 require_once $rootDir . '/includes/auth.php';
 require_once $rootDir . '/includes/functions.php';
+require_once $rootDir . '/includes/availability.php';
 
 header('Content-Type: application/json; charset=utf-8');
 require_auth();
@@ -78,10 +79,18 @@ try {
         ];
     }
 
+    // Fetch current user's availability status & slots
+    $myAvailStatusStmt = $pdo->prepare("SELECT availability_status FROM users WHERE id = :uid LIMIT 1");
+    $myAvailStatusStmt->execute([':uid' => $userId]);
+    $myAvailabilityStatus = $myAvailStatusStmt->fetchColumn() ?: null;
+
+    $myAvailSlotsMap = get_users_availability_slots_map($pdo, [$userId]);
+    $myAvailSlots = $myAvailSlotsMap[$userId] ?? [];
+
     // 3. Bulk query candidates AND their skills in ONE single SQL call
     $candidatesStmt = $pdo->prepare("
         SELECT 
-            u.id AS user_id, u.name, u.username, u.bio, u.location, u.profile_image,
+            u.id AS user_id, u.name, u.username, u.bio, u.location, u.profile_image, u.availability_status,
             us.skill_id, us.skill_type, us.proficiency,
             s.name AS skill_name, s.category AS skill_category
         FROM users u
@@ -99,13 +108,14 @@ try {
         if (!isset($candidates[$cId])) {
             $candidates[$cId] = [
                 'info' => [
-                    'id'            => $row['user_id'],
-                    'name'          => $row['name'],
-                    'username'      => $row['username'],
-                    'bio'           => $row['bio'],
-                    'location'      => $row['location'],
-                    'avatar_url'    => get_avatar_url($row['profile_image']),
-                    'swap_status'   => $requestMap[$cId] ?? null
+                    'id'                  => $row['user_id'],
+                    'name'                => $row['name'],
+                    'username'            => $row['username'],
+                    'bio'                 => $row['bio'],
+                    'location'            => $row['location'],
+                    'availability_status' => $row['availability_status'],
+                    'avatar_url'          => get_avatar_url($row['profile_image']),
+                    'swap_status'         => $requestMap[$cId] ?? null
                 ],
                 'offers' => [],
                 'wants'  => []
@@ -127,6 +137,9 @@ try {
         }
     }
 
+    // Preload weekly availability slots for all candidate users in one bulk query
+    $candSlotsMap = get_users_availability_slots_map($pdo, array_keys($candidates));
+
     // 4. Compute matches
     $twoWayMatches = [];
     $oneWayMatches = [];
@@ -146,12 +159,24 @@ try {
             }
         }
 
+        if (empty($theyOfferWhatIWant)) {
+            continue;
+        }
+
+        $schedCompat = compute_schedule_compatibility(
+            $myAvailabilityStatus,
+            $myAvailSlots,
+            $candidate['info']['availability_status'],
+            $candSlotsMap[$candId] ?? []
+        );
+
         if (!empty($theyOfferWhatIWant) && !empty($iOfferWhatTheyWant)) {
             $twoWayMatches[] = array_merge($candidate['info'], [
                 'match_type'          => 'two_way',
                 'compatibility_score' => 100,
                 'offered_to_you'      => $theyOfferWhatIWant,
                 'wanted_from_you'     => $iOfferWhatTheyWant,
+                'availability'        => $schedCompat,
                 'primary_exchange'    => [
                     'you_learn' => $theyOfferWhatIWant[0]['name'],
                     'you_teach' => $iOfferWhatTheyWant[0]['name']
@@ -164,6 +189,7 @@ try {
                 'compatibility_score' => 70,
                 'offered_to_you'      => $theyOfferWhatIWant,
                 'wanted_from_you'     => [],
+                'availability'        => $schedCompat,
                 'explanation'         => "Offers {$theyOfferWhatIWant[0]['name']}, which you want to learn."
             ]);
         }

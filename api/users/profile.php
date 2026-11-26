@@ -8,6 +8,7 @@ define('APP_INIT', true);
 require_once __DIR__ . '/../../config/db.php';
 require_once __DIR__ . '/../../includes/auth.php';
 require_once __DIR__ . '/../../includes/functions.php';
+require_once __DIR__ . '/../../includes/availability.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -85,12 +86,14 @@ try {
     }
 
     $isOwnProfile = (current_user_id() === $requestedId);
+    $availability = get_user_availability($pdo, $requestedId);
 
     json_response(true, 'User profile retrieved.', [
         'user'           => $user,
         'is_own_profile' => $isOwnProfile,
         'skills_offered' => $skillsOffered,
         'skills_wanted'  => $skillsWanted,
+        'availability'   => $availability,
         'reviews'        => $reviews,
         'rating'         => [
             'average' => $avgRating,
