@@ -17,7 +17,7 @@
     }
 
     // Initialize theme from storage or system preference
-    const savedTheme = localStorage.getItem(THEME_KEY) || 
+    const savedTheme = localStorage.getItem(THEME_KEY) ||
         (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
     applyTheme(savedTheme);
 

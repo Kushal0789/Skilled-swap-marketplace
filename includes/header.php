@@ -47,6 +47,9 @@ $pageDesc = $pageDesc ?? 'Connect with peers to exchange skills, knowledge, and 
     <!-- Messaging System Styles (loaded on all pages for unread badge) -->
     <link rel="stylesheet" href="assets/css/messages.css">
     <link rel="stylesheet" href="assets/css/messages-responsive.css">
+    <?php if (!empty($pageCss)): ?>
+        <link rel="stylesheet" href="assets/css/<?= e($pageCss) ?>?v=<?= @filemtime(__DIR__ . '/../assets/css/' . $pageCss) ?: time() ?>">
+    <?php endif; ?>
 </head>
 <body>
     <!-- Top Navigation Bar -->
